@@ -15,13 +15,22 @@ export default function Home() {
         features and the interactive STL viewer will be built in future tasks.
       </p>
       {process.env.NODE_ENV === "development" && (
-        <Link
-          className="w-fit rounded text-sky-800 underline underline-offset-4"
-          href="/dev/three"
-          prefetch={false}
-        >
-          Open the development 3D sanity check
-        </Link>
+        <div className="flex flex-col items-start gap-2">
+          <Link
+            className="rounded text-sky-800 underline underline-offset-4"
+            href="/dev/three"
+            prefetch={false}
+          >
+            Open the development 3D sanity check
+          </Link>
+          <Link
+            className="rounded text-sky-800 underline underline-offset-4"
+            href="/dev/products"
+            prefetch={false}
+          >
+            Open the product repository check
+          </Link>
+        </div>
       )}
     </main>
   );

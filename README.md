@@ -1,8 +1,9 @@
 # 3D Print Catalog — Development Foundation
 
 A minimal foundation for a future 3D printing product catalog with an interactive
-STL viewer. No final branding, product data, catalog pages, STL loader, forms,
-authentication, CMS, database, or ecommerce is implemented.
+STL viewer. The product domain and local repository are ready, but no final
+branding, catalog UI, STL loader, forms, authentication, CMS, database, or
+ecommerce is implemented.
 
 ## Stack
 
@@ -44,6 +45,7 @@ lockfile for reproducible installs.
 ```text
 src/
   app/                 App Router layout, styles, and foundation homepage
+    dev/products/      Development-only product repository verification
     dev/three/         Isolated development-only cube and error fallback
   components/
     layout/            Future shared layout components
@@ -52,17 +54,17 @@ src/
     three/             Future production viewer components
     home/              Future homepage sections
   config/site.ts       Placeholder identity, contact links, and navigation
-  data/                Future local data behind a repository boundary
-  lib/                 Future data access and shared utilities
-  types/               Future shared domain types
+  data/products.ts     Local sample data behind the repository boundary
+  lib/products/        Async repository, validation, checks, and utilities
+  types/product.ts     Product domain types and central allowed values
 public/
   models/              Future STL files
   products/            Future product thumbnails/images
   images/              General static imagery
 ```
 
-Reserved directories contain only `.gitkeep`, so Git preserves the structure.
-No placeholder components or unused data APIs are added. `@/*` maps to `src/*`.
+Reserved component directories contain only `.gitkeep`, so Git preserves the
+structure. No placeholder components are added. `@/*` maps to `src/*`.
 
 ## Architecture
 
@@ -75,9 +77,8 @@ System fonts avoid external font requests during builds and page rendering.
 
 Future product UI must use repository functions such as `getProducts()`,
 `getProductBySlug()`, `getFeaturedProducts()`, and `getProductsByCategory()` from
-`src/lib`, rather than importing `src/data` directly. Define the domain model and
-repository contract when product development starts, making later CMS/database
-migration possible without coupling UI to storage.
+`src/lib/products`, rather than importing `src/data` directly. This keeps UI
+independent from local storage and allows a later CMS/database adapter.
 
 Future STL files go in `public/models` and can be addressed as `/models/file.stl`.
 **STL units are assumed to be millimeters unless explicitly configured otherwise.**
@@ -97,6 +98,59 @@ The route returns 404 in production, and the production homepage has no link to
 it. Delete `src/app/dev/three` and its homepage link when this check is no longer
 useful; do not promote it into the final viewer without a dedicated design task.
 
+## Product Data Architecture
+
+The product domain lives in `src/types/product.ts`. It defines `Product`, colors,
+millimeter dimensions, optional model configuration, and central readonly lists
+for categories, materials, and currencies. Derive options from those lists rather
+than repeating category or material strings elsewhere.
+
+Eight development records live in `src/data/products.ts`. This file is a local
+data adapter, not a UI API. Pages and components must import async functions from
+`src/lib/products` and must never import `products.ts` directly. The available API
+is:
+
+- `getAllProducts()` for internal access including inactive records
+- `getProducts()` and `getActiveProducts()` for the public active catalog
+- `getProductBySlug()` and `getProductById()` for active records by default
+- `getFeaturedProducts()` and `getProductsByCategory()` for public subsets
+- `searchProducts()` for case-insensitive, whitespace-tolerant matching
+- `getRelatedProducts()` for deterministic category/tag ranking
+
+Slug/ID uniqueness, URL-safe slugs, categories, colors, image paths, model paths,
+materials, currencies, and important required values are validated once when the
+repository module loads. Repository arrays are returned as readonly values and
+new array instances, so consumers cannot accidentally modify catalog ordering.
+The product objects and nested collections are readonly at the type boundary.
+
+To add a product:
+
+1. Add one typed record to `src/data/products.ts` with a unique lowercase
+   kebab-case ID and slug.
+2. Put image references under `/products/{product-slug}/`, using `cover.webp` for
+   the thumbnail and names such as `01.webp` and `02.webp` for additional images.
+3. If a model will exist, use `/models/{product-slug}.stl`. Referenced development
+   assets may be absent until the UI adds graceful fallbacks; do not commit fake
+   binaries.
+4. Use `#RGB` or `#RRGGBB` color values. Six-digit values are preferred because
+   the future viewer can pass them directly to a Three.js material.
+5. Set `active: false` to retain a record while hiding it from public repository
+   functions. `featured: true` only appears in featured results when the product
+   is also active. Omit price/currency for quotation-based products.
+
+STL dimensions are assumed to be millimeters unless `modelConfig` explicitly
+specifies otherwise. The current `modelConfig.unit` supports millimeters, along
+with optional initial rotation and scale. Automatic camera framing remains the
+preferred viewer behavior.
+
+To migrate to Supabase, a CMS, or another database, replace the local data access
+inside `src/lib/products` while preserving its async function contracts and domain
+types. Product pages and components should require no storage-specific rewrite.
+
+In development, `/dev/products` lists every sample record, repository counts,
+featured/search output, and lightweight assertions for validation, search,
+related products, and inactive filtering. It returns 404 in production.
+
 ## Codex workflow
 
 Read [AGENTS.md](./AGENTS.md) before changing the project. It defines priorities,
@@ -106,13 +160,12 @@ When a browser capability is unavailable, report the limitation explicitly.
 
 ## Future roadmap
 
-1. Define the product domain types and repository contract, including model units,
-   thumbnail references, and product identifiers.
-2. Implement the catalog with responsive, optimized thumbnails.
-3. Build product detail pages and the isolated STL viewer with framing, controls,
+1. Implement the catalog with responsive, optimized thumbnails using only the
+   product repository API.
+2. Build product detail pages and the isolated STL viewer with framing, controls,
    material color updates, loading states, and failure recovery.
-4. Add custom print requests, contact, about, and FAQ pages.
-5. Validate accessibility, mobile/touch behavior, performance, and deployment.
+3. Add custom print requests, contact, about, and FAQ pages.
+4. Validate accessibility, mobile/touch behavior, performance, and deployment.
 
 ## Tooling notes
 
