@@ -5,10 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { ProductDetailInteraction } from "@/components/product/ProductDetailInteraction";
 import { createPublicUrl } from "@/config/deployment";
 import { ProductDetails } from "@/components/product/ProductDetails";
-import {
-  ProductGallery,
-  type ProductGalleryItem,
-} from "@/components/product/ProductGallery";
+import type { ProductGalleryItem } from "@/components/product/ProductGallery";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { siteConfig } from "@/config/site";
 import {
@@ -103,23 +100,13 @@ export async function renderProductPage({
           </ol>
         </nav>
 
-        <ProductDetailInteraction product={displayProduct} locale={locale} />
+        <ProductDetailInteraction
+          product={displayProduct}
+          locale={locale}
+          galleryItems={galleryItems}
+        />
 
         <div className="mt-20 space-y-20 sm:mt-24 sm:space-y-24">
-          <section aria-labelledby="product-photos-heading">
-            <SectionHeading
-              eyebrow={d.product.gallery}
-              heading={d.product.photos}
-              id="product-photos-heading"
-            />
-            <div className="max-w-5xl">
-              <ProductGallery
-                items={galleryItems}
-                productName={displayProduct.name}
-              />
-            </div>
-          </section>
-
           <section
             aria-labelledby="product-description-heading"
             className="grid gap-6 border-t border-zinc-200 pt-10 lg:grid-cols-[minmax(0,0.65fr)_minmax(0,1.35fr)] lg:gap-16"
