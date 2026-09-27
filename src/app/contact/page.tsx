@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, AtSign, Camera, MessageCircle, Send } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -19,7 +20,7 @@ const contactMethods = [
   },
   {
     label: "WhatsApp",
-    href: siteConfig.whatsappUrl,
+    href: createWhatsAppUrl({ phoneNumber: siteConfig.whatsappNumber }) ?? "",
     description: "Start a conversation through WhatsApp.",
     icon: MessageCircle,
     external: true,

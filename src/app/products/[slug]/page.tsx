@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
-import { ProductColorList } from "@/components/product/ProductColorList";
+import { ArrowLeft } from "lucide-react";
+import { ProductDetailInteraction } from "@/components/product/ProductDetailInteraction";
 import { ProductDetails } from "@/components/product/ProductDetails";
 import {
   ProductGallery,
   type ProductGalleryItem,
 } from "@/components/product/ProductGallery";
-import { ProductModelPreview } from "@/components/product/ProductModelPreview";
-import { ProductPrice } from "@/components/product/ProductPrice";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import {
   getProductBySlug,
@@ -88,63 +86,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </ol>
         </nav>
 
-        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,0.85fr)] lg:gap-14 xl:gap-20">
-          <ProductModelPreview
-            colors={product.colors}
-            model={product.model}
-            modelConfig={product.modelConfig}
-          />
-
-          <div className="lg:py-3">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-zinc-500">
-              {product.category}
-            </p>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
-              {product.name}
-            </h1>
-            <p className="mt-5 text-lg leading-8 text-zinc-600">
-              {product.shortDescription}
-            </p>
-
-            {!product.model && product.colors && product.colors.length > 0 && (
-              <section aria-labelledby="available-colors" className="mt-8">
-                <h2
-                  className="mb-3 text-sm font-semibold text-zinc-950"
-                  id="available-colors"
-                >
-                  Available colors
-                </h2>
-                <ProductColorList colors={product.colors} />
-              </section>
-            )}
-
-            <div className="mt-8 border-y border-zinc-200 py-6">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
-                Price
-              </p>
-              <ProductPrice currency={product.currency} price={product.price} />
-            </div>
-
-            {product.customizable && (
-              <p className="mt-6 flex items-start gap-2 text-sm leading-6 text-zinc-600">
-                <Check
-                  aria-hidden="true"
-                  className="mt-0.5 size-5 shrink-0 text-sky-700"
-                />
-                Color or size customization may be available.
-              </p>
-            )}
-
-            <Link
-              className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-zinc-800 sm:w-auto"
-              href={`/contact?product=${encodeURIComponent(product.slug)}`}
-              prefetch={false}
-            >
-              Request this product
-              <ArrowRight aria-hidden="true" className="size-4" />
-            </Link>
-          </div>
-        </div>
+        <ProductDetailInteraction product={product} />
 
         <div className="mt-20 space-y-20 sm:mt-24 sm:space-y-24">
           <section aria-labelledby="product-photos-heading">

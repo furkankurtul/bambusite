@@ -1,17 +1,24 @@
+"use client";
+
 import { Box } from "lucide-react";
 import type { Product } from "@/types/product";
+import type { ProductColor } from "@/types/product";
 import { InteractiveModelPreview } from "./InteractiveModelPreview";
 
 interface ProductModelPreviewProps {
   readonly colors: Product["colors"];
   readonly model: Product["model"];
   readonly modelConfig: Product["modelConfig"];
+  readonly onColorChange: (color: ProductColor) => void;
+  readonly selectedColor: ProductColor | undefined;
 }
 
 export function ProductModelPreview({
   colors,
   model,
   modelConfig,
+  onColorChange,
+  selectedColor,
 }: ProductModelPreviewProps) {
   return (
     <section
@@ -23,6 +30,8 @@ export function ProductModelPreview({
           colors={colors}
           model={model}
           modelConfig={modelConfig}
+          onColorChange={onColorChange}
+          selectedColor={selectedColor}
         />
       ) : (
         <div className="relative flex aspect-[4/3] min-h-72 items-center justify-center overflow-hidden">

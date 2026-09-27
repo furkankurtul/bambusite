@@ -33,13 +33,19 @@ interface ModelViewerProps {
   readonly colors: Product["colors"];
   readonly model: NonNullable<Product["model"]>;
   readonly modelConfig: Product["modelConfig"];
+  readonly onColorChange: (color: ProductColor) => void;
+  readonly selectedColor: ProductColor | undefined;
 }
 
-export function ModelViewer({ colors, model, modelConfig }: ModelViewerProps) {
+export function ModelViewer({
+  colors,
+  model,
+  modelConfig,
+  onColorChange,
+  selectedColor,
+}: ModelViewerProps) {
   const availableColors = colors ?? [];
-  const [selectedColor, setSelectedColor] = useState<ProductColor>(
-    availableColors[0] ?? DEFAULT_MODEL_COLOR,
-  );
+  const activeColor = selectedColor ?? DEFAULT_MODEL_COLOR;
   const [retryVersion, setRetryVersion] = useState(0);
   const [runtimeFailed, setRuntimeFailed] = useState(false);
   const [webGLAvailable] = useState(canUseWebGL);
@@ -71,7 +77,7 @@ export function ModelViewer({ colors, model, modelConfig }: ModelViewerProps) {
   } else {
     viewerContent = (
       <ModelLoader
-        color={selectedColor.hex}
+        color={activeColor.hex}
         key={`${model}:${retryVersion}`}
         model={model}
         onRuntimeFailure={handleRuntimeFailure}
@@ -92,8 +98,8 @@ export function ModelViewer({ colors, model, modelConfig }: ModelViewerProps) {
         <div className="border-t border-zinc-200 p-4 sm:p-5">
           <ProductColorSelector
             colors={availableColors}
-            onChange={setSelectedColor}
-            selectedColor={selectedColor}
+            onChange={onColorChange}
+            selectedColor={activeColor}
           />
         </div>
       )}
