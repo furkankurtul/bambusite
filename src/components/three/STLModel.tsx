@@ -11,6 +11,7 @@ import {
   Vector3,
 } from "three";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+import { withBasePath } from "@/config/deployment";
 
 export interface ModelBounds {
   readonly center: Vector3;
@@ -41,7 +42,7 @@ export function useSTLGeometry(
     const loader = new STLLoader();
 
     loader.load(
-      modelUrl,
+      withBasePath(modelUrl),
       (geometry) => {
         try {
           const prepared = prepareGeometry(

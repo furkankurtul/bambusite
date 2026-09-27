@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Box } from "lucide-react";
 import { useState } from "react";
+import { withBasePath } from "@/config/deployment";
 
 interface ProductImageProps {
   readonly aspectRatioClass?: string;
@@ -63,7 +64,7 @@ export function ProductImage({
           onError={() => setFailed(true)}
           priority={priority}
           sizes={sizes}
-          src={src}
+          src={withBasePath(src)}
         />
       )}
     </div>

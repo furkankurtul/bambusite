@@ -220,6 +220,20 @@ architecture boundaries, 3D requirements, validation, and documentation rules.
 Inspect existing code, make scoped changes, run checks, and validate in a browser.
 When a browser capability is unavailable, report the limitation explicitly.
 
+## GitHub Pages static hosting
+
+The repository includes a GitHub Actions workflow at
+`.github/workflows/deploy-pages.yml`. It builds the Next.js static export and
+deploys the generated `out` directory with the repository name as the base path,
+so project Pages URLs work without editing application code. The workflow sets
+`NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_SITE_URL` from the GitHub repository
+context. For local or custom deployments, these optional variables can be set
+in `.env.local`; leave them empty when serving the site from `/`.
+
+Enable **Settings → Pages → Source: GitHub Actions** in the repository before
+the first deployment. The final brand and contact values in `src/config/site.ts`
+may remain placeholders while deployment is being tested.
+
 ## Future roadmap
 
 1. Add optimized, licensed production assets before activating additional catalog

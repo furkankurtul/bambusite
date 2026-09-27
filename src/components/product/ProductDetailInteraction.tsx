@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, MessageCircle } from "lucide-react";
+import { createPublicUrl } from "@/config/deployment";
 import { siteConfig } from "@/config/site";
 import {
   createWhatsAppProductInquiry,
@@ -117,15 +118,5 @@ export function ProductDetailInteraction({
 
 function createProductUrl(slug: string): string | undefined {
   const productPath = `/products/${encodeURIComponent(slug)}`;
-
-  if (siteConfig.siteUrl) {
-    try {
-      return new URL(productPath, siteConfig.siteUrl).toString();
-    } catch {
-      return undefined;
-    }
-  }
-
-  if (typeof window === "undefined") return undefined;
-  return new URL(productPath, window.location.origin).toString();
+  return createPublicUrl(productPath, siteConfig.siteUrl);
 }

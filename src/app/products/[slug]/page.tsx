@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { ProductDetailInteraction } from "@/components/product/ProductDetailInteraction";
+import { createPublicUrl } from "@/config/deployment";
 import { ProductDetails } from "@/components/product/ProductDetails";
 import {
   ProductGallery,
@@ -20,7 +21,6 @@ import {
   resolveProductThumbnailSources,
 } from "@/lib/products/media";
 import { resolvePublicAsset } from "@/lib/public-assets";
-import { getConfiguredExternalUrl } from "@/lib/site-links";
 import type { Product } from "@/types/product";
 
 interface ProductPageProps {
@@ -41,9 +41,9 @@ export async function generateMetadata({
   if (!product) notFound();
 
   const thumbnail = await resolvePublicAsset(product.thumbnail);
-  const siteUrl = getConfiguredExternalUrl(siteConfig.siteUrl);
-  const openGraphImage =
-    thumbnail && siteUrl ? new URL(thumbnail, siteUrl).toString() : undefined;
+  const openGraphImage = thumbnail
+    ? createPublicUrl(thumbnail, siteConfig.siteUrl)
+    : undefined;
 
   return {
     title: product.name,

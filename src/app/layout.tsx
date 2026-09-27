@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { deploymentConfig } from "@/config/deployment";
 import { siteConfig } from "@/config/site";
 import { getConfiguredExternalUrl } from "@/lib/site-links";
 import "./globals.css";
 
-const metadataBase = getConfiguredExternalUrl(siteConfig.siteUrl);
+const metadataBase = getConfiguredExternalUrl(
+  deploymentConfig.siteUrl || siteConfig.siteUrl,
+);
 
 export const metadata: Metadata = {
   title: {
