@@ -18,13 +18,26 @@ export function normalizeSearchQuery(value: string): string {
 export function formatProductDimensions(
   dimensions: ProductDimensions | undefined,
 ): string | undefined {
-  if (!dimensions) return undefined;
+  if (
+    !dimensions ||
+    dimensions.width === undefined ||
+    dimensions.height === undefined ||
+    dimensions.depth === undefined
+  )
+    return undefined;
 
-  const values = [dimensions.width, dimensions.height, dimensions.depth].filter(
-    (value): value is number => value !== undefined,
-  );
+  return `${dimensions.width} × ${dimensions.depth} × ${dimensions.height} ${dimensions.unit}`;
+}
 
-  if (values.length === 0) return undefined;
+export function formatPrintTime(
+  minutes: number | undefined,
+): string | undefined {
+  if (minutes === undefined || minutes <= 0) return undefined;
 
-  return `${values.join(" × ")} ${dimensions.unit}`;
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (hours === 0) return `${remainingMinutes} min`;
+  if (remainingMinutes === 0) return `${hours} hr`;
+  return `${hours} hr ${remainingMinutes} min`;
 }

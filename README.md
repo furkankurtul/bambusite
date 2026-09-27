@@ -167,6 +167,17 @@ filters work together, invalid categories safely behave as “All,” and inacti
 records never reach the page. Cards link to the future `/products/[slug]` route
 without loading STL or Three.js code.
 
+Each active product is statically generated at `/products/[slug]` through
+repository-backed `getProductBySlug()` lookups. Unknown and inactive slugs return 404. Detail pages include product metadata, an optional image-selection client
+boundary, shared price and dimension formatting, technical details, and related
+products selected by `getRelatedProducts()`.
+
+`ProductModelPreview` owns the stable 3D presentation boundary. It currently shows
+a lightweight model-available or coming-soon shell and accepts the future model,
+color, and model-configuration inputs. The next viewer task can replace its
+internals without restructuring the detail page or hydrating the static product
+content.
+
 ## Codex workflow
 
 Read [AGENTS.md](./AGENTS.md) before changing the project. It defines priorities,
@@ -176,8 +187,8 @@ When a browser capability is unavailable, report the limitation explicitly.
 
 ## Future roadmap
 
-1. Build product detail pages and the isolated STL viewer with framing, controls,
-   material color updates, loading states, and failure recovery.
+1. Replace the product detail preview shell with an isolated STL viewer including
+   framing, controls, material color updates, loading states, and failure recovery.
 2. Add custom print requests, contact, about, and FAQ pages.
 3. Validate accessibility, mobile/touch behavior, performance, and deployment.
 

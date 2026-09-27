@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
-import { ProductCard } from "@/components/product/ProductCard";
+import { ProductGrid } from "@/components/product/ProductGrid";
 import { productMatchesSearch } from "@/lib/products/search";
 import {
   PRODUCT_CATEGORIES,
@@ -110,17 +110,11 @@ export function ProductCatalog({
       />
 
       {visibleProducts.length > 0 ? (
-        <div
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-          id="product-grid"
-        >
-          {visibleProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              thumbnailSrc={thumbnailSources[product.id]}
-            />
-          ))}
+        <div id="product-grid">
+          <ProductGrid
+            products={visibleProducts}
+            thumbnailSources={thumbnailSources}
+          />
         </div>
       ) : (
         <CatalogEmptyState onReset={clearFilters} />

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ProductCatalog } from "@/components/catalog/ProductCatalog";
 import { getProducts } from "@/lib/products";
-import { resolvePublicAsset } from "@/lib/public-assets";
+import { resolveProductThumbnailSources } from "@/lib/products/media";
 
 export const metadata: Metadata = {
   title: "Products",
@@ -12,17 +12,7 @@ export const metadata: Metadata = {
 
 export default async function ProductsPage() {
   const products = await getProducts();
-  const thumbnailEntries = await Promise.all(
-    products.map(
-      async (product) =>
-        [product.id, await resolvePublicAsset(product.thumbnail)] as const,
-    ),
-  );
-  const thumbnailSources = Object.fromEntries(
-    thumbnailEntries.filter(
-      (entry): entry is readonly [string, string] => entry[1] !== undefined,
-    ),
-  );
+  const thumbnailSources = await resolveProductThumbnailSources(products);
 
   return (
     <main className="min-h-svh bg-[#f7f7f5]">
