@@ -106,7 +106,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {product.shortDescription}
             </p>
 
-            {product.colors && product.colors.length > 0 && (
+            {!product.model && product.colors && product.colors.length > 0 && (
               <section aria-labelledby="available-colors" className="mt-8">
                 <h2
                   className="mb-3 text-sm font-semibold text-zinc-950"

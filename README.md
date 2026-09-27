@@ -1,9 +1,9 @@
-# 3D Print Catalog — Development Foundation
+# 3D Print Catalog
 
-A minimal foundation for a future 3D printing product catalog with an interactive
-STL viewer. The product domain and local repository are ready, but no final
-branding, catalog UI, STL loader, forms, authentication, CMS, database, or
-ecommerce is implemented.
+A server-rendered 3D printing product catalog with searchable product listings,
+statically generated detail pages, and a lazy-loaded interactive STL viewer. The
+project still uses placeholder branding and local sample data; forms,
+authentication, a CMS, database, and ecommerce are not implemented.
 
 ## Stack
 
@@ -53,14 +53,14 @@ src/
     layout/            Future shared layout components
     ui/                Future reusable UI primitives
     product/           Product cards, images, colors, and prices
-    three/             Future production viewer components
+    three/             Production STL loading, camera fitting, and viewer errors
     home/              Future homepage sections
   config/site.ts       Placeholder identity, contact links, and navigation
   data/products.ts     Local sample data behind the repository boundary
   lib/products/        Async repository, validation, checks, and utilities
   types/product.ts     Product domain types and central allowed values
 public/
-  models/              Future STL files
+  models/              STL files and the original development test fixture
   products/            Future product thumbnails/images
   images/              General static imagery
 ```
@@ -70,8 +70,8 @@ structure. No placeholder components are added. `@/*` maps to `src/*`.
 
 ## Architecture
 
-Pages and the root layout default to Server Components. Only the isolated 3D
-check uses client rendering. The site configuration is the single place for
+Pages and the root layout default to Server Components. Interactive catalog and
+viewer features use narrow client boundaries. The site configuration is the single place for
 future name, description, Instagram, WhatsApp, email, and primary navigation.
 Contact values are obvious placeholders and are not rendered as live links.
 Add navigation entries only as their corresponding routes are implemented.
@@ -82,11 +82,9 @@ Future product UI must use repository functions such as `getProducts()`,
 `src/lib/products`, rather than importing `src/data` directly. This keeps UI
 independent from local storage and allows a later CMS/database adapter.
 
-Future STL files go in `public/models` and can be addressed as `/models/file.stl`.
-**STL units are assumed to be millimeters unless explicitly configured otherwise.**
-Product listings use images from `public/products`; they must not load STL geometry.
-The future detail viewer must handle asynchronous loading, resource ownership and
-disposal, automatic centering/framing, material-only color changes, and errors.
+STL files go in `public/models` and are addressed as `/models/file.stl`. Product
+listings use images from `public/products` and do not load STL geometry or the 3D
+viewer runtime.
 
 ## Isolated 3D sanity check
 
@@ -135,7 +133,7 @@ To add a product:
    assets may be absent until the UI adds graceful fallbacks; do not commit fake
    binaries.
 4. Use `#RGB` or `#RRGGBB` color values. Six-digit values are preferred because
-   the future viewer can pass them directly to a Three.js material.
+   the viewer can pass them directly to a Three.js material.
 5. Set `active: false` to retain a record while hiding it from public repository
    functions. `featured: true` only appears in featured results when the product
    is also active. Omit price/currency for quotation-based products.
@@ -164,19 +162,54 @@ image requests; the client image component also handles failures after rendering
 product search matcher with categories from `PRODUCT_CATEGORIES`, updates `q` and
 `category` URL parameters, and renders reusable product cards. Search and category
 filters work together, invalid categories safely behave as “All,” and inactive
-records never reach the page. Cards link to the future `/products/[slug]` route
-without loading STL or Three.js code.
+records never reach the page. Cards link to `/products/[slug]` without loading
+STL or Three.js code.
 
 Each active product is statically generated at `/products/[slug]` through
 repository-backed `getProductBySlug()` lookups. Unknown and inactive slugs return 404. Detail pages include product metadata, an optional image-selection client
 boundary, shared price and dimension formatting, technical details, and related
 products selected by `getRelatedProducts()`.
 
-`ProductModelPreview` owns the stable 3D presentation boundary. It currently shows
-a lightweight model-available or coming-soon shell and accepts the future model,
-color, and model-configuration inputs. The next viewer task can replace its
-internals without restructuring the detail page or hydrating the static product
-content.
+`ProductModelPreview` owns the stable 3D presentation boundary. Products with a
+model dynamically load the client-only viewer, while products without one keep
+the server-rendered coming-soon state and do not initialize Three.js. The rest of
+the detail page remains server rendered.
+
+## 3D Viewer Architecture
+
+`ProductModelPreview` conditionally mounts `InteractiveModelPreview`, which uses
+a Next.js dynamic import with server rendering disabled for `ModelViewer`.
+`ModelViewer` owns color and camera controls, while `STLModel` owns the loaded
+geometry and its single `MeshStandardMaterial`. `STLLoader` reads the product's
+path from `public/models`; the Fidget Cube sample deliberately uses the small,
+original `public/models/dev-test.stl` fixture for browser verification.
+
+STL files do not encode dependable units, so scene units are treated as
+millimeters. Geometry preparation validates the position data, supplies normals
+only when absent, centers the raw bounds, applies `modelConfig.initialRotation`
+in XYZ order, applies uniform `modelConfig.scale`, and then recomputes its box and
+sphere. The material uses flat shading to retain the STL's intended facets. These
+calculated bounds drive a padded, FOV-aware camera fit, adaptive clipping planes,
+the controls target, and zoom limits after transforms and container resizes.
+
+Choosing a color mutates only the existing material color. It does not remount
+the Canvas, reload the STL, or replace geometry. Orbit controls provide damped
+rotation and zoom, stop the slow automatic rotation after user input, and expose
+reset and restart controls. A scoped `touch-action: pan-y` rule lets vertical
+touch gestures scroll the surrounding page while horizontal gestures remain
+available to the viewer. Reduced-motion preferences disable automatic rotation
+by default.
+
+The stable viewer shell contains loading progress, request and parse failures,
+retry controls, WebGL capability handling, context-loss handling, and a
+viewer-only error boundary. Geometry and material ownership is explicit and both
+are disposed on unmount; React Three Fiber owns renderer and control cleanup.
+Model-less products avoid the dynamic viewer import entirely.
+
+Large STL files receive local loading feedback but are not decimated in the
+browser. Optimize source meshes before publishing. Very complex or repeatedly
+used assets should eventually be converted to an optimized GLB pipeline with
+compression and preprocessed normals.
 
 ## Codex workflow
 
@@ -187,10 +220,10 @@ When a browser capability is unavailable, report the limitation explicitly.
 
 ## Future roadmap
 
-1. Replace the product detail preview shell with an isolated STL viewer including
-   framing, controls, material color updates, loading states, and failure recovery.
+1. Replace sample and missing model paths with optimized, licensed production
+   assets and add automated visual coverage for representative sizes.
 2. Add custom print requests, contact, about, and FAQ pages.
-3. Validate accessibility, mobile/touch behavior, performance, and deployment.
+3. Validate physical-device touch behavior, performance budgets, and deployment.
 
 ## Tooling notes
 

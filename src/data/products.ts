@@ -69,6 +69,8 @@ const localProducts = [
       "A compact desk and pocket fidget with varied textures for quiet tactile use.",
     thumbnail: "/products/fidget-cube/cover.webp",
     images: ["/products/fidget-cube/01.webp"],
+    model: "/models/dev-test.stl",
+    modelConfig: { unit: "mm", initialRotation: [0.2, -0.35, 0] },
     colors: [
       { name: "Black", hex: "#111111" },
       { name: "Mint", hex: "#6EE7B7" },

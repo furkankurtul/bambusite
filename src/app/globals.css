@@ -13,3 +13,7 @@ body {
   outline: 2px solid #0369a1;
   outline-offset: 4px;
 }
+
+.product-model-canvas canvas {
+  touch-action: pan-y !important;
+}
