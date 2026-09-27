@@ -2,7 +2,9 @@
 
 A server-rendered 3D printing product catalog with searchable product listings,
 statically generated detail pages, and a lazy-loaded interactive STL viewer. The
-project still uses placeholder branding and local sample data; forms,
+current public catalog uses the available Caraxes Dragon and Star Fidget Toy asset
+sets; additional local records remain inactive until their assets are supplied.
+The project still uses placeholder branding and local sample data; forms,
 authentication, a CMS, database, and ecommerce are not implemented.
 
 ## Stack
@@ -50,7 +52,7 @@ src/
     products/          Public product catalog route
   components/
     catalog/           Search, category filtering, and catalog empty state
-    layout/            Future shared layout components
+    layout/            Shared header and footer
     ui/                Future reusable UI primitives
     product/           Product cards, images, colors, and prices
     three/             Production STL loading, camera fitting, and viewer errors
@@ -105,7 +107,7 @@ millimeter dimensions, optional model configuration, and central readonly lists
 for categories, materials, and currencies. Derive options from those lists rather
 than repeating category or material strings elsewhere.
 
-Eight development records live in `src/data/products.ts`. This file is a local
+Eight local records live in `src/data/products.ts`. This file is a local
 data adapter, not a UI API. Pages and components must import async functions from
 `src/lib/products` and must never import `products.ts` directly. The available API
 is:
@@ -180,9 +182,9 @@ the detail page remains server rendered.
 `ProductModelPreview` conditionally mounts `InteractiveModelPreview`, which uses
 a Next.js dynamic import with server rendering disabled for `ModelViewer`.
 `ModelViewer` owns color and camera controls, while `STLModel` owns the loaded
-geometry and its single `MeshStandardMaterial`. `STLLoader` reads the product's
-path from `public/models`; the Fidget Cube sample deliberately uses the small,
-original `public/models/dev-test.stl` fixture for browser verification.
+geometry and its single `MeshStandardMaterial`. `STLLoader` reads each active
+product's configured path from `public/models`; the separate development-only
+sanity route retains `public/models/dev-test.stl` for browser verification.
 
 STL files do not encode dependable units, so scene units are treated as
 millimeters. Geometry preparation validates the position data, supplies normals
@@ -220,10 +222,9 @@ When a browser capability is unavailable, report the limitation explicitly.
 
 ## Future roadmap
 
-1. Replace sample and missing model paths with optimized, licensed production
-   assets and add automated visual coverage for representative sizes.
-2. Add custom print requests, contact, about, and FAQ pages.
-3. Validate physical-device touch behavior, performance budgets, and deployment.
+1. Add optimized, licensed production assets before activating additional catalog
+   records, and add automated visual coverage for representative sizes.
+2. Validate physical-device touch behavior, performance budgets, and deployment.
 
 ## Tooling notes
 
