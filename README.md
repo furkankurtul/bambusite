@@ -47,10 +47,12 @@ src/
   app/                 App Router layout, styles, and foundation homepage
     dev/products/      Development-only product repository verification
     dev/three/         Isolated development-only cube and error fallback
+    products/          Public product catalog route
   components/
+    catalog/           Search, category filtering, and catalog empty state
     layout/            Future shared layout components
     ui/                Future reusable UI primitives
-    product/           Future product UI
+    product/           Product cards, images, colors, and prices
     three/             Future production viewer components
     home/              Future homepage sections
   config/site.ts       Placeholder identity, contact links, and navigation
@@ -151,6 +153,20 @@ In development, `/dev/products` lists every sample record, repository counts,
 featured/search output, and lightweight assertions for validation, search,
 related products, and inactive filtering. It returns 404 in production.
 
+## Product Catalog
+
+The public catalog is available at `/products`. Its Server Component loads active
+records through `getProducts()` and checks which local public thumbnails exist.
+Missing files render a neutral product fallback without sending known-invalid
+image requests; the client image component also handles failures after rendering.
+
+`ProductCatalog` is the only interactive catalog boundary. It combines the shared
+product search matcher with categories from `PRODUCT_CATEGORIES`, updates `q` and
+`category` URL parameters, and renders reusable product cards. Search and category
+filters work together, invalid categories safely behave as “All,” and inactive
+records never reach the page. Cards link to the future `/products/[slug]` route
+without loading STL or Three.js code.
+
 ## Codex workflow
 
 Read [AGENTS.md](./AGENTS.md) before changing the project. It defines priorities,
@@ -160,12 +176,10 @@ When a browser capability is unavailable, report the limitation explicitly.
 
 ## Future roadmap
 
-1. Implement the catalog with responsive, optimized thumbnails using only the
-   product repository API.
-2. Build product detail pages and the isolated STL viewer with framing, controls,
+1. Build product detail pages and the isolated STL viewer with framing, controls,
    material color updates, loading states, and failure recovery.
-3. Add custom print requests, contact, about, and FAQ pages.
-4. Validate accessibility, mobile/touch behavior, performance, and deployment.
+2. Add custom print requests, contact, about, and FAQ pages.
+3. Validate accessibility, mobile/touch behavior, performance, and deployment.
 
 ## Tooling notes
 

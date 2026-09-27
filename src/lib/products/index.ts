@@ -1,5 +1,6 @@
 import localProducts from "@/data/products";
 import type { Product, ProductCategory } from "@/types/product";
+import { productMatchesSearch } from "./search";
 import { normalizeSearchQuery } from "./utils";
 import { assertValidProductCatalog } from "./validation";
 
@@ -70,22 +71,10 @@ export async function searchProducts(
   const normalizedQuery = normalizeSearchQuery(query);
   if (!normalizedQuery) return [];
 
-  const queryTokens = normalizedQuery.split(" ");
-
-  return catalog.filter((product) => {
-    if (!product.active) return false;
-
-    const searchableText = normalizeSearchQuery(
-      [
-        product.name,
-        product.shortDescription,
-        product.category,
-        ...(product.tags ?? []),
-      ].join(" "),
-    );
-
-    return queryTokens.every((token) => searchableText.includes(token));
-  });
+  return catalog.filter(
+    (product) =>
+      product.active && productMatchesSearch(product, normalizedQuery),
+  );
 }
 
 export async function getRelatedProducts(
