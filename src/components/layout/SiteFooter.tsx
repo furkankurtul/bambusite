@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, AtSign, Camera, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import {
@@ -6,8 +9,14 @@ import {
   getConfiguredExternalUrl,
 } from "@/lib/site-links";
 import { createWhatsAppUrl } from "@/lib/whatsapp";
+import { getDictionary, type Locale } from "@/i18n";
+import { localizedPath } from "@/i18n/routes";
 
 export function SiteFooter() {
+  const pathname = usePathname();
+  const locale: Locale =
+    pathname === "/en" || pathname.startsWith("/en/") ? "en" : "tr";
+  const d = getDictionary(locale);
   const instagramUrl = getConfiguredExternalUrl(siteConfig.instagramUrl);
   const emailHref = getConfiguredEmailHref(siteConfig.email);
   const whatsAppUrl = createWhatsAppUrl({
@@ -37,26 +46,31 @@ export function SiteFooter() {
         <div className="max-w-sm">
           <Link
             className="rounded-sm text-base font-semibold tracking-[-0.02em] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-            href="/"
+            href={localizedPath(locale)}
           >
             {siteConfig.name}
           </Link>
           <p className="mt-4 text-sm leading-6 text-zinc-400">
-            Explore 3D printed products or start a custom print request for a
-            model or idea of your own.
+            {d.footer.description}
           </p>
         </div>
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-            Explore
+            {d.footer.explore}
           </p>
           <ul className="mt-4 space-y-3">
-            {siteConfig.primaryNavigation.map((item) => (
+            {[
+              { label: d.nav.products, href: "/products" },
+              { label: d.nav.customPrint, href: "/custom-print" },
+              { label: d.nav.about, href: "/about" },
+              { label: d.nav.faq, href: "/faq" },
+              { label: d.nav.contact, href: "/contact" },
+            ].map((item) => (
               <li key={item.href}>
                 <Link
                   className="rounded-sm text-sm text-zinc-300 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-                  href={item.href}
+                  href={localizedPath(locale, item.href)}
                 >
                   {item.label}
                 </Link>
@@ -67,7 +81,7 @@ export function SiteFooter() {
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-            Contact
+            {d.footer.contact}
           </p>
           {contactLinks.length > 0 ? (
             <ul className="mt-4 space-y-3">
@@ -93,16 +107,16 @@ export function SiteFooter() {
           ) : (
             <Link
               className="mt-4 inline-flex rounded-sm text-sm text-zinc-300 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-              href="/contact"
+              href={localizedPath(locale, "/contact")}
             >
-              Contact options
+              {d.footer.contactOptions}
             </Link>
           )}
         </div>
       </div>
       <div className="border-t border-zinc-800">
         <div className="mx-auto flex max-w-[90rem] flex-col gap-2 px-5 py-5 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
-          <p>3D printed products and custom print requests.</p>
+          <p>{d.footer.tagline}</p>
           <p>
             © {new Date().getFullYear()} {siteConfig.name}
           </p>

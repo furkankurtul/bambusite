@@ -9,6 +9,20 @@ const localProducts = [
     shortDescription: "A 3D printed dragon figurine for display and play.",
     description:
       "A detailed dragon model made for shelves, desks, and imaginative play.",
+    localized: {
+      tr: {
+        name: "Caraxes Ejderhası",
+        shortDescription: "Sergileme ve oyun için 3D baskılı ejderha figürü.",
+        description:
+          "Raflar, masalar ve hayal gücüyle oyun için hazırlanmış detaylı bir ejderha modeli.",
+      },
+      en: {
+        name: "Caraxes Dragon",
+        shortDescription: "A 3D printed dragon figurine for display and play.",
+        description:
+          "A detailed dragon model made for shelves, desks, and imaginative play.",
+      },
+    },
     thumbnail: "/products/caraxes/cover.png",
     images: ["/products/caraxes/01.png"],
     model: "/models/caraxes-single-color.stl",
@@ -55,6 +69,21 @@ const localProducts = [
     category: "Fidget",
     shortDescription: "A star-shaped fidget toy for hands-on desk breaks.",
     description: "A compact 3D printed fidget toy with a playful star shape.",
+    localized: {
+      tr: {
+        name: "Yıldız Stres Oyuncağı",
+        shortDescription:
+          "Masa başı molaları için yıldız biçimli stres oyuncağı.",
+        description:
+          "Eğlenceli yıldız biçimine sahip kompakt 3D baskılı stres oyuncağı.",
+      },
+      en: {
+        name: "Star Fidget Toy",
+        shortDescription: "A star-shaped fidget toy for hands-on desk breaks.",
+        description:
+          "A compact 3D printed fidget toy with a playful star shape.",
+      },
+    },
     thumbnail: "/products/star-fidget/cover.png",
     images: ["/products/star-fidget/01.png"],
     model: "/models/10-star-fidget-toy.stl",

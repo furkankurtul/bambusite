@@ -4,6 +4,8 @@ import { Box } from "lucide-react";
 import type { Product } from "@/types/product";
 import type { ProductColor } from "@/types/product";
 import { InteractiveModelPreview } from "./InteractiveModelPreview";
+import type { Locale } from "@/i18n";
+import { getDictionary } from "@/i18n";
 
 interface ProductModelPreviewProps {
   readonly colors: Product["colors"];
@@ -11,6 +13,7 @@ interface ProductModelPreviewProps {
   readonly modelConfig: Product["modelConfig"];
   readonly onColorChange: (color: ProductColor) => void;
   readonly selectedColor: ProductColor | undefined;
+  readonly locale?: Locale;
 }
 
 export function ProductModelPreview({
@@ -19,10 +22,12 @@ export function ProductModelPreview({
   modelConfig,
   onColorChange,
   selectedColor,
+  locale = "tr",
 }: ProductModelPreviewProps) {
+  const d = getDictionary(locale);
   return (
     <section
-      aria-label="Product 3D preview"
+      aria-label={d.viewer.previewLabel}
       className="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-950 text-white shadow-sm"
     >
       {model ? (
@@ -32,6 +37,7 @@ export function ProductModelPreview({
           modelConfig={modelConfig}
           onColorChange={onColorChange}
           selectedColor={selectedColor}
+          locale={locale}
         />
       ) : (
         <div className="relative flex aspect-[4/3] min-h-72 items-center justify-center overflow-hidden">
@@ -43,9 +49,9 @@ export function ProductModelPreview({
             <span className="mb-5 flex size-16 items-center justify-center rounded-2xl border border-white/15 bg-white/10">
               <Box aria-hidden="true" className="size-8" strokeWidth={1.5} />
             </span>
-            <p className="text-xl font-semibold">3D preview coming soon</p>
+            <p className="text-xl font-semibold">{d.viewer.comingSoon}</p>
             <p className="mt-2 max-w-sm text-sm leading-6 text-zinc-300">
-              This product does not have an interactive model available yet.
+              {d.viewer.noModel}
             </p>
           </div>
         </div>

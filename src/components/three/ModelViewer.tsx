@@ -20,6 +20,8 @@ import {
 import { MathUtils, PerspectiveCamera, TOUCH, Vector3 } from "three";
 import { ProductColorSelector } from "@/components/product/ProductColorSelector";
 import type { Product, ProductColor } from "@/types/product";
+import type { Locale } from "@/i18n";
+import { getDictionary } from "@/i18n";
 import { STLModel, type ModelBounds, useSTLGeometry } from "./STLModel";
 import { ViewerErrorBoundary } from "./ViewerErrorBoundary";
 
@@ -35,6 +37,7 @@ interface ModelViewerProps {
   readonly modelConfig: Product["modelConfig"];
   readonly onColorChange: (color: ProductColor) => void;
   readonly selectedColor: ProductColor | undefined;
+  readonly locale?: Locale;
 }
 
 export function ModelViewer({
@@ -43,7 +46,9 @@ export function ModelViewer({
   modelConfig,
   onColorChange,
   selectedColor,
+  locale = "tr",
 }: ModelViewerProps) {
+  const d = getDictionary(locale);
   const availableColors = colors ?? [];
   const activeColor = selectedColor ?? DEFAULT_MODEL_COLOR;
   const [retryVersion, setRetryVersion] = useState(0);
@@ -62,16 +67,18 @@ export function ModelViewer({
   if (!webGLAvailable) {
     viewerContent = (
       <ViewerFailure
-        message="WebGL is unavailable in this browser or device."
+        message={d.viewer.webglError}
         retryLabel={undefined}
+        locale={locale}
       />
     );
   } else if (runtimeFailed) {
     viewerContent = (
       <ViewerFailure
-        message="The interactive preview stopped unexpectedly."
+        message={d.viewer.contextError}
         onRetry={retry}
-        retryLabel="Restart viewer"
+        retryLabel={d.viewer.reset}
+        locale={locale}
       />
     );
   } else {
@@ -85,6 +92,7 @@ export function ModelViewer({
         retryVersion={retryVersion}
         rotation={rotation}
         scale={scale}
+        locale={locale}
       />
     );
   }
@@ -100,6 +108,7 @@ export function ModelViewer({
             colors={availableColors}
             onChange={onColorChange}
             selectedColor={activeColor}
+            locale={locale}
           />
         </div>
       )}
@@ -115,6 +124,7 @@ interface ModelLoaderProps {
   readonly retryVersion: number;
   readonly rotation: readonly [number, number, number];
   readonly scale: number;
+  readonly locale: Locale;
 }
 
 function ModelLoader({
@@ -125,11 +135,12 @@ function ModelLoader({
   retryVersion,
   rotation,
   scale,
+  locale,
 }: ModelLoaderProps) {
   const loadState = useSTLGeometry(model, rotation, scale);
 
   if (loadState.status === "loading") {
-    return <ViewerLoading progress={loadState.progress} />;
+    return <ViewerLoading progress={loadState.progress} locale={locale} />;
   }
 
   if (loadState.status === "error") {
@@ -137,7 +148,8 @@ function ModelLoader({
       <ViewerFailure
         message={loadState.message}
         onRetry={onRetry}
-        retryLabel="Try again"
+        retryLabel={getDictionary(locale).viewer.tryAgain}
+        locale={locale}
       />
     );
   }
@@ -146,9 +158,14 @@ function ModelLoader({
     <ViewerErrorBoundary
       fallback={
         <ViewerFailure
-          message="The 3D preview could not be displayed."
+          message={
+            locale === "tr"
+              ? "3D ön izleme görüntülenemedi."
+              : "The 3D preview could not be displayed."
+          }
           onRetry={onRetry}
-          retryLabel="Restart viewer"
+          retryLabel={getDictionary(locale).viewer.reset}
+          locale={locale}
         />
       }
       key={retryVersion}
@@ -158,6 +175,7 @@ function ModelLoader({
         color={color}
         geometry={loadState.geometry}
         onRuntimeFailure={onRuntimeFailure}
+        locale={locale}
       />
     </ViewerErrorBoundary>
   );
@@ -171,6 +189,7 @@ interface ModelCanvasProps {
     { status: "ready" }
   >["geometry"];
   readonly onRuntimeFailure: () => void;
+  readonly locale: Locale;
 }
 
 function ModelCanvas({
@@ -178,7 +197,9 @@ function ModelCanvas({
   color,
   geometry,
   onRuntimeFailure,
+  locale,
 }: ModelCanvasProps) {
+  const d = getDictionary(locale);
   const [autoRotate, setAutoRotate] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -227,19 +248,18 @@ function ModelCanvas({
             onRuntimeFailure={onRuntimeFailure}
             resetVersion={resetVersion}
             userInteracted={userInteracted}
+            locale={locale}
           />
         </Canvas>
       </div>
 
       <div className="absolute right-3 top-3 z-10 flex flex-col gap-2 sm:flex-row">
-        <ViewerButton label="Reset view" onClick={resetView}>
+        <ViewerButton label={d.viewer.reset} onClick={resetView}>
           <RotateCcw aria-hidden="true" className="size-4" />
-          <span className="hidden sm:inline">Reset</span>
+          <span className="hidden sm:inline">{d.viewer.reset}</span>
         </ViewerButton>
         <ViewerButton
-          label={
-            autoRotate ? "Pause automatic rotation" : "Start automatic rotation"
-          }
+          label={autoRotate ? d.viewer.pauseRotate : d.viewer.startRotate}
           onClick={() => setAutoRotate((enabled) => !enabled)}
           pressed={autoRotate}
         >
@@ -248,12 +268,12 @@ function ModelCanvas({
           ) : (
             <Play aria-hidden="true" className="size-4" />
           )}
-          <span className="hidden sm:inline">Auto rotate</span>
+          <span className="hidden sm:inline">{d.viewer.autoRotate}</span>
         </ViewerButton>
       </div>
 
       <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-zinc-600 shadow-sm backdrop-blur-sm">
-        Drag to rotate · Scroll or pinch to zoom
+        {d.viewer.instructions}
       </p>
     </>
   );
@@ -389,7 +409,14 @@ function ViewerButton({
   );
 }
 
-function ViewerLoading({ progress }: { readonly progress?: number }) {
+function ViewerLoading({
+  progress,
+  locale,
+}: {
+  readonly progress?: number;
+  readonly locale: Locale;
+}) {
+  const label = getDictionary(locale).viewer.loading;
   return (
     <div className="flex size-full flex-col items-center justify-center px-8 text-center text-zinc-700">
       <LoaderCircle
@@ -397,7 +424,8 @@ function ViewerLoading({ progress }: { readonly progress?: number }) {
         className="size-7 animate-spin motion-reduce:animate-none"
       />
       <p className="mt-3 text-sm font-semibold" role="status">
-        Loading 3D model{progress === undefined ? "…" : `… ${progress}%`}
+        {label}
+        {progress === undefined ? "" : ` ${progress}%`}
       </p>
       {progress !== undefined && (
         <div
@@ -422,16 +450,22 @@ interface ViewerFailureProps {
   readonly message: string;
   readonly onRetry?: () => void;
   readonly retryLabel: string | undefined;
+  readonly locale: Locale;
 }
 
-function ViewerFailure({ message, onRetry, retryLabel }: ViewerFailureProps) {
+function ViewerFailure({
+  message,
+  onRetry,
+  retryLabel,
+  locale,
+}: ViewerFailureProps) {
   return (
     <div className="flex size-full flex-col items-center justify-center px-8 text-center text-zinc-700">
       <span className="flex size-12 items-center justify-center rounded-2xl border border-zinc-200 bg-white shadow-sm">
         <AlertTriangle aria-hidden="true" className="size-6" />
       </span>
       <p className="mt-4 text-base font-semibold text-zinc-950">
-        3D preview unavailable
+        {getDictionary(locale).viewer.comingSoon}
       </p>
       <p className="mt-1 max-w-sm text-sm leading-6">{message}</p>
       {onRetry && retryLabel && (

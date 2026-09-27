@@ -1,20 +1,38 @@
 import { formatPrintTime, formatProductDimensions } from "@/lib/products/utils";
 import type { Product } from "@/types/product";
+import type { Locale } from "@/i18n";
+import { getDictionary } from "@/i18n";
 
 interface ProductDetailsProps {
   readonly product: Product;
+  readonly locale?: Locale;
 }
 
-export function ProductDetails({ product }: ProductDetailsProps) {
+export function ProductDetails({
+  product,
+  locale = "tr",
+}: ProductDetailsProps) {
+  const d = getDictionary(locale);
   const dimensions = formatProductDimensions(product.dimensions);
   const printTime = formatPrintTime(product.printTime);
   const details = [
-    ["Category", product.category],
-    ["Material", product.material],
-    ["Dimensions", dimensions],
-    ["Estimated print time", printTime],
-    ["Customizable", product.customizable ? "Available" : "Standard design"],
-    ["3D model", product.model ? "Available" : "Coming soon"],
+    [d.product.category, d.categories[product.category]],
+    [
+      d.product.material,
+      product.material ? d.materials[product.material] : undefined,
+    ],
+    [d.product.dimensions, dimensions],
+    [d.product.printTime, printTime],
+    [
+      d.product.customizable,
+      product.customizable
+        ? d.product.customAvailable
+        : d.product.standardDesign,
+    ],
+    [
+      d.product.model,
+      product.model ? d.product.modelAvailable : d.product.comingSoon,
+    ],
   ].filter((entry): entry is [string, string] => entry[1] !== undefined);
 
   return (

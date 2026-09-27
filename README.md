@@ -234,6 +234,14 @@ Enable **Settings → Pages → Source: GitHub Actions** in the repository befor
 the first deployment. The final brand and contact values in `src/config/site.ts`
 may remain placeholders while deployment is being tested.
 
+## Localization
+
+Turkish is the default language at the root routes. English is available under
+the equivalent `/en` paths. Typed dictionaries live in `src/i18n`, while
+product slugs, category IDs, materials, assets, and STL paths remain shared
+between locales. The header language switcher keeps the current page and
+preserves catalog query parameters when switching in the browser.
+
 ## Future roadmap
 
 1. Add optimized, licensed production assets before activating additional catalog

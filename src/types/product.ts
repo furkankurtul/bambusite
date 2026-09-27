@@ -30,6 +30,19 @@ export interface ProductColor {
   readonly hex: string;
 }
 
+export interface ProductLocalizedContent {
+  readonly tr: {
+    readonly name: string;
+    readonly shortDescription: string;
+    readonly description: string;
+  };
+  readonly en: {
+    readonly name: string;
+    readonly shortDescription: string;
+    readonly description: string;
+  };
+}
+
 export interface ProductDimensions {
   readonly width?: number;
   readonly height?: number;
@@ -50,6 +63,7 @@ export interface Product {
   readonly category: ProductCategory;
   readonly shortDescription: string;
   readonly description: string;
+  readonly localized?: ProductLocalizedContent;
   readonly thumbnail: string;
   readonly images?: readonly string[];
   readonly model?: string;

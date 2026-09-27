@@ -1,27 +1,34 @@
 import { Check } from "lucide-react";
 import type { ProductColor } from "@/types/product";
+import type { Locale } from "@/i18n";
+import { getDictionary } from "@/i18n";
 
 interface ProductColorSelectorProps {
   readonly colors: readonly ProductColor[];
   readonly onChange: (color: ProductColor) => void;
   readonly selectedColor: ProductColor;
+  readonly locale?: Locale;
 }
 
 export function ProductColorSelector({
   colors,
   onChange,
   selectedColor,
+  locale = "tr",
 }: ProductColorSelectorProps) {
+  const d = getDictionary(locale);
   return (
     <div>
       <div className="flex items-baseline justify-between gap-4">
-        <p className="text-sm font-semibold text-zinc-950">Available colors</p>
+        <p className="text-sm font-semibold text-zinc-950">
+          {d.product.availableColors}
+        </p>
         <p aria-live="polite" className="text-xs text-zinc-500">
-          Selected: {selectedColor.name}
+          {locale === "tr" ? "Seçili" : "Selected"}: {selectedColor.name}
         </p>
       </div>
       <div
-        aria-label="Model color"
+        aria-label={d.viewer.color}
         className="mt-3 flex flex-wrap gap-2"
         role="group"
       >
@@ -30,7 +37,7 @@ export function ProductColorSelector({
 
           return (
             <button
-              aria-label={`${color.name}${selected ? ", selected" : ""}`}
+              aria-label={`${color.name}${selected ? (locale === "tr" ? ", seçili" : ", selected") : ""}`}
               aria-pressed={selected}
               className={`inline-flex items-center gap-2 rounded-full border py-2 pl-2 pr-3 text-sm font-medium transition ${
                 selected

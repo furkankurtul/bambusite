@@ -11,10 +11,12 @@ import {
 } from "@/types/product";
 import { CatalogEmptyState } from "./CatalogEmptyState";
 import { CatalogToolbar, type CatalogCategory } from "./CatalogToolbar";
+import type { Locale } from "@/i18n";
 
 interface ProductCatalogProps {
   readonly products: readonly Product[];
   readonly thumbnailSources: Readonly<Record<string, string>>;
+  readonly locale: Locale;
 }
 
 function isProductCategory(value: string | null): value is ProductCategory {
@@ -24,6 +26,7 @@ function isProductCategory(value: string | null): value is ProductCategory {
 export function ProductCatalog({
   products,
   thumbnailSources,
+  locale,
 }: ProductCatalogProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -107,6 +110,7 @@ export function ProductCatalog({
         onSearchChange={handleSearchChange}
         resultCount={visibleProducts.length}
         searchValue={searchValue}
+        locale={locale}
       />
 
       {visibleProducts.length > 0 ? (
@@ -114,10 +118,11 @@ export function ProductCatalog({
           <ProductGrid
             products={visibleProducts}
             thumbnailSources={thumbnailSources}
+            locale={locale}
           />
         </div>
       ) : (
-        <CatalogEmptyState onReset={clearFilters} />
+        <CatalogEmptyState onReset={clearFilters} locale={locale} />
       )}
     </div>
   );

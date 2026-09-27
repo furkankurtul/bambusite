@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { LoaderCircle } from "lucide-react";
 import type { Product, ProductColor } from "@/types/product";
+import type { Locale } from "@/i18n";
 
 const ModelViewer = dynamic(
   () =>
@@ -34,6 +35,7 @@ interface InteractiveModelPreviewProps {
   readonly modelConfig: Product["modelConfig"];
   readonly onColorChange: (color: ProductColor) => void;
   readonly selectedColor: ProductColor | undefined;
+  readonly locale?: Locale;
 }
 
 export function InteractiveModelPreview(props: InteractiveModelPreviewProps) {

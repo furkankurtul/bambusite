@@ -13,12 +13,18 @@ import type { Product, ProductColor } from "@/types/product";
 import { ProductColorList } from "./ProductColorList";
 import { ProductModelPreview } from "./ProductModelPreview";
 import { ProductPrice } from "./ProductPrice";
+import type { Locale } from "@/i18n";
+import { getDictionary } from "@/i18n";
+import { localizedPath } from "@/i18n/routes";
 
 export function ProductDetailInteraction({
   product,
+  locale = "tr",
 }: {
   readonly product: Product;
+  readonly locale?: Locale;
 }) {
+  const d = getDictionary(locale);
   const [selectedColor, setSelectedColor] = useState<ProductColor | undefined>(
     product.colors?.[0],
   );
@@ -27,10 +33,10 @@ export function ProductDetailInteraction({
   );
 
   function openInquiry() {
-    const productUrl = createProductUrl(product.slug);
+    const productUrl = createProductUrl(product.slug, locale);
     const inquiryUrl = createWhatsAppProductInquiry({
       colorName: selectedColor?.name,
-      copy: siteConfig.productInquiryCopy,
+      copy: d.inquiry,
       material: product.material,
       phoneNumber: siteConfig.whatsappNumber,
       productName: product.name,
@@ -50,11 +56,12 @@ export function ProductDetailInteraction({
         modelConfig={product.modelConfig}
         onColorChange={setSelectedColor}
         selectedColor={selectedColor}
+        locale={locale}
       />
 
       <div className="lg:py-3">
         <p className="text-sm font-semibold uppercase tracking-[0.16em] text-zinc-500">
-          {product.category}
+          {d.categories[product.category]}
         </p>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
           {product.name}
@@ -69,7 +76,7 @@ export function ProductDetailInteraction({
               className="mb-3 text-sm font-semibold text-zinc-950"
               id="available-colors"
             >
-              Available colors
+              {d.product.availableColors}
             </h2>
             <ProductColorList colors={product.colors} />
           </section>
@@ -77,7 +84,7 @@ export function ProductDetailInteraction({
 
         <div className="mt-8 border-y border-zinc-200 py-6">
           <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
-            Price
+            {d.product.price}
           </p>
           <ProductPrice currency={product.currency} price={product.price} />
         </div>
@@ -88,26 +95,26 @@ export function ProductDetailInteraction({
               aria-hidden="true"
               className="mt-0.5 size-5 shrink-0 text-sky-700"
             />
-            Color or size customization may be available.
+            {d.product.customizable}
           </p>
         )}
 
         {whatsappAvailable ? (
           <button
-            aria-label={`Ask on WhatsApp about ${product.name}${selectedColor ? ` in ${selectedColor.name}` : ""}`}
+            aria-label={`${d.product.askWhatsapp}: ${product.name}${selectedColor ? `, ${selectedColor.name}` : ""}`}
             className="mt-7 inline-flex w-full min-h-11 items-center justify-center gap-2 rounded-md bg-zinc-950 px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:w-auto"
             onClick={openInquiry}
             type="button"
           >
-            Ask on WhatsApp
+            {d.product.askWhatsapp}
             <MessageCircle aria-hidden="true" className="size-4" />
           </button>
         ) : (
           <Link
             className="mt-7 inline-flex w-full min-h-11 items-center justify-center gap-2 rounded-md bg-zinc-950 px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:w-auto"
-            href={`/contact?product=${encodeURIComponent(product.slug)}`}
+            href={`${localizedPath(locale, "/contact")}?product=${encodeURIComponent(product.slug)}`}
           >
-            Ask about this product
+            {d.product.askAbout}
             <ArrowRight aria-hidden="true" className="size-4" />
           </Link>
         )}
@@ -116,7 +123,10 @@ export function ProductDetailInteraction({
   );
 }
 
-function createProductUrl(slug: string): string | undefined {
-  const productPath = `/products/${encodeURIComponent(slug)}`;
+function createProductUrl(slug: string, locale: Locale): string | undefined {
+  const productPath = localizedPath(
+    locale,
+    `/products/${encodeURIComponent(slug)}`,
+  );
   return createPublicUrl(productPath, siteConfig.siteUrl);
 }

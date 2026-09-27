@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import { CheckCircle2, FileUp, Upload, X } from "lucide-react";
 import { createCustomPrintRequest } from "@/lib/custom-print/submitRequest";
 import type { ProductMaterial } from "@/types/product";
+import type { Locale } from "@/i18n";
+import { getDictionary } from "@/i18n";
 
 const ACCEPTED_FILE_EXTENSIONS = ["stl", "3mf", "obj", "step"] as const;
 
@@ -34,9 +36,12 @@ const initialValues: FormValues = {
 
 export function CustomPrintRequestForm({
   materials,
+  locale = "tr",
 }: {
   materials: readonly ProductMaterial[];
+  locale?: Locale;
 }) {
+  const d = getDictionary(locale);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [values, setValues] = useState<FormValues>(initialValues);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -60,7 +65,7 @@ export function CustomPrintRequestForm({
         extension as (typeof ACCEPTED_FILE_EXTENSIONS)[number],
       )
       ? undefined
-      : "Choose an STL, 3MF, OBJ, or STEP file.";
+      : d.custom.errors.file;
   }
 
   function setFile(file: File | null) {
@@ -72,20 +77,19 @@ export function CustomPrintRequestForm({
   function validate() {
     const nextErrors: FormErrors = {};
 
-    if (!values.name.trim()) nextErrors.name = "Enter your name.";
+    if (!values.name.trim()) nextErrors.name = d.custom.errors.name;
     if (!values.email.trim()) {
-      nextErrors.email = "Enter your email address.";
+      nextErrors.email = d.custom.errors.email;
     } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-      nextErrors.email = "Enter a valid email address.";
+      nextErrors.email = d.custom.errors.validEmail;
     }
     if (values.description.trim().length < 10) {
-      nextErrors.description =
-        "Describe your project in at least 10 characters.";
+      nextErrors.description = d.custom.errors.description;
     }
     if (!/^\d+$/.test(values.quantity) || Number(values.quantity) < 1) {
-      nextErrors.quantity = "Enter a quantity of at least 1.";
+      nextErrors.quantity = d.custom.errors.quantity;
     }
-    if (!values.material) nextErrors.material = "Choose a preferred material.";
+    if (!values.material) nextErrors.material = d.custom.errors.material;
 
     const fileError = validateFile(selectedFile);
     if (fileError) nextErrors.file = fileError;
@@ -133,24 +137,23 @@ export function CustomPrintRequestForm({
           strokeWidth={1.5}
         />
         <p className="mt-7 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-          Demo complete
+          {d.custom.demoComplete}
         </p>
         <h2
           id="demo-complete"
           className="mt-3 text-3xl font-semibold tracking-[-0.04em]"
         >
-          Your request is ready for review.
+          {d.custom.successTitle}
         </h2>
         <p className="mt-4 max-w-xl text-base leading-7 text-zinc-600">
-          This is a preview of the request flow. No project details or files
-          have been sent or stored yet.
+          {d.custom.successText}
         </p>
         <button
           className="mt-8 inline-flex min-h-11 items-center justify-center rounded-md bg-zinc-950 px-5 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
           type="button"
           onClick={resetDemo}
         >
-          Start another demo request
+          {d.custom.another}
         </button>
       </section>
     );
@@ -164,17 +167,20 @@ export function CustomPrintRequestForm({
     >
       <div className="border-b border-zinc-200 pb-6">
         <h2 className="text-2xl font-semibold tracking-[-0.03em]">
-          Tell us about your project
+          {d.custom.formTitle}
         </h2>
         <p className="mt-2 text-sm leading-6 text-zinc-600">
-          Fields marked with <span aria-hidden="true">*</span>
-          <span className="sr-only">an asterisk</span> are required for this
-          demo.
+          {d.custom.required}
         </p>
       </div>
 
       <div className="mt-7 grid gap-5 sm:grid-cols-2">
-        <Field label="Name" required error={errors.name} htmlFor="name">
+        <Field
+          label={d.custom.name}
+          required
+          error={errors.name}
+          htmlFor="name"
+        >
           <input
             autoComplete="name"
             className={inputClass(errors.name)}
@@ -185,7 +191,12 @@ export function CustomPrintRequestForm({
             {...describedBy(errors.name, "name")}
           />
         </Field>
-        <Field label="Email" required error={errors.email} htmlFor="email">
+        <Field
+          label={d.custom.email}
+          required
+          error={errors.email}
+          htmlFor="email"
+        >
           <input
             autoComplete="email"
             className={inputClass(errors.email)}
@@ -197,7 +208,7 @@ export function CustomPrintRequestForm({
             {...describedBy(errors.email, "email")}
           />
         </Field>
-        <Field label="Phone" hint="Optional" htmlFor="phone">
+        <Field label={d.custom.phone} hint={d.custom.optional} htmlFor="phone">
           <input
             autoComplete="tel"
             className={inputClass()}
@@ -209,7 +220,7 @@ export function CustomPrintRequestForm({
           />
         </Field>
         <Field
-          label="Quantity"
+          label={d.custom.quantity}
           required
           error={errors.quantity}
           htmlFor="quantity"
@@ -226,18 +237,18 @@ export function CustomPrintRequestForm({
             {...describedBy(errors.quantity, "quantity")}
           />
         </Field>
-        <Field label="Preferred color" hint="Optional" htmlFor="color">
+        <Field label={d.custom.color} hint={d.custom.optional} htmlFor="color">
           <input
             className={inputClass()}
             id="color"
             name="color"
-            placeholder="For example, matte black"
+            placeholder={d.custom.colorPlaceholder}
             onChange={(event) => updateValue("color", event.target.value)}
             value={values.color}
           />
         </Field>
         <Field
-          label="Preferred material"
+          label={d.custom.material}
           required
           error={errors.material}
           htmlFor="material"
@@ -250,7 +261,7 @@ export function CustomPrintRequestForm({
             value={values.material}
             {...describedBy(errors.material, "material")}
           >
-            <option value="">Choose a material</option>
+            <option value="">{d.custom.chooseMaterial}</option>
             {materials.map((material) => (
               <option key={material} value={material}>
                 {material}
@@ -259,8 +270,8 @@ export function CustomPrintRequestForm({
           </select>
         </Field>
         <Field
-          label="Approximate dimensions"
-          hint="Optional"
+          label={d.custom.dimensions}
+          hint={d.custom.optional}
           htmlFor="dimensions"
         >
           <input
@@ -275,7 +286,7 @@ export function CustomPrintRequestForm({
         <div className="hidden sm:block" aria-hidden="true" />
         <Field
           className="sm:col-span-2"
-          label="Project description"
+          label={d.custom.description}
           required
           error={errors.description}
           htmlFor="description"
@@ -331,13 +342,13 @@ export function CustomPrintRequestForm({
               </span>
               <div>
                 <p className="text-sm font-semibold text-zinc-950">
-                  {selectedFile ? selectedFile.name : "Attach a model file"}
+                  {selectedFile ? selectedFile.name : d.custom.attach}
                 </p>
                 <p
                   id="project-file-help"
                   className="mt-1 text-sm text-zinc-600"
                 >
-                  STL, 3MF, OBJ, or STEP
+                  {d.custom.accepted}
                 </p>
               </div>
             </div>
@@ -348,11 +359,11 @@ export function CustomPrintRequestForm({
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload aria-hidden="true" className="size-4" />
-                Choose file
+                {d.custom.chooseFile}
               </button>
               {selectedFile ? (
                 <button
-                  aria-label="Remove selected file"
+                  aria-label={d.custom.removeFile}
                   className="inline-flex size-10 items-center justify-center rounded-md text-zinc-600 transition-colors hover:bg-white hover:text-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
                   type="button"
                   onClick={() => {
@@ -379,15 +390,14 @@ export function CustomPrintRequestForm({
 
       <div className="mt-8 flex flex-col gap-3 border-t border-zinc-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-md text-sm leading-6 text-zinc-600">
-          Submitting this form only displays a demo confirmation. It does not
-          send or store your information.
+          {d.custom.successText}
         </p>
         <button
           className="inline-flex min-h-11 items-center justify-center rounded-md bg-zinc-950 px-5 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 disabled:cursor-wait disabled:bg-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
           disabled={isSubmitting}
           type="submit"
         >
-          {isSubmitting ? "Preparing demo…" : "Preview request"}
+          {isSubmitting ? d.custom.preparing : d.custom.submit}
         </button>
       </div>
     </form>

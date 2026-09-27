@@ -3,14 +3,12 @@ import { ArrowLeft, SearchX } from "lucide-react";
 import { getDictionary } from "@/i18n";
 import { localizedPath } from "@/i18n/routes";
 
-export default function ProductNotFound() {
-  const d = getDictionary("tr");
+export default function EnglishProductNotFound() {
+  const d = getDictionary("en");
   return (
     <main className="flex min-h-svh items-center bg-[#f7f7f5] px-5 py-16 sm:px-8">
       <div className="mx-auto w-full max-w-xl rounded-2xl border border-zinc-200 bg-white px-6 py-14 text-center shadow-sm sm:px-10">
-        <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-600">
-          <SearchX aria-hidden="true" className="size-7" />
-        </span>
+        <SearchX aria-hidden="true" className="mx-auto size-8 text-zinc-600" />
         <p className="mt-6 text-sm font-semibold uppercase tracking-[0.16em] text-zinc-500">
           {d.product.invalidTitle}
         </p>
@@ -21,8 +19,8 @@ export default function ProductNotFound() {
           {d.product.invalidText}
         </p>
         <Link
-          className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-md bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
-          href={localizedPath("tr", "/products")}
+          className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-md bg-zinc-950 px-5 py-3 text-sm font-semibold text-white"
+          href={localizedPath("en", "/products")}
         >
           <ArrowLeft aria-hidden="true" className="size-4" />
           {d.product.back}

@@ -1,5 +1,6 @@
 import { Search, X } from "lucide-react";
 import { PRODUCT_CATEGORIES, type ProductCategory } from "@/types/product";
+import { getDictionary, type Locale } from "@/i18n";
 
 export type CatalogCategory = ProductCategory | "All";
 
@@ -11,6 +12,7 @@ interface CatalogToolbarProps {
   readonly onSearchChange: (value: string) => void;
   readonly resultCount: number;
   readonly searchValue: string;
+  readonly locale: Locale;
 }
 
 const categoryOptions: readonly CatalogCategory[] = [
@@ -26,13 +28,15 @@ export function CatalogToolbar({
   onSearchChange,
   resultCount,
   searchValue,
+  locale,
 }: CatalogToolbarProps) {
+  const d = getDictionary(locale);
   return (
     <div className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-4 sm:p-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="relative w-full lg:max-w-md">
           <label className="sr-only" htmlFor="catalog-search">
-            Search products
+            {d.catalog.search}
           </label>
           <Search
             aria-hidden="true"
@@ -43,7 +47,7 @@ export function CatalogToolbar({
             className="h-12 w-full rounded-lg border border-zinc-300 bg-white pl-11 pr-4 text-base text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-950 focus:ring-2 focus:ring-zinc-950/15"
             id="catalog-search"
             onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Search products"
+            placeholder={d.catalog.search}
             type="search"
             value={searchValue}
           />
@@ -51,7 +55,8 @@ export function CatalogToolbar({
 
         <div className="flex items-center justify-between gap-4">
           <p aria-live="polite" className="text-sm text-zinc-500">
-            {resultCount} {resultCount === 1 ? "product" : "products"}
+            {resultCount}{" "}
+            {resultCount === 1 ? d.catalog.product : d.catalog.products}
           </p>
           {hasActiveFilters && (
             <button
@@ -60,14 +65,14 @@ export function CatalogToolbar({
               type="button"
             >
               <X aria-hidden="true" className="size-4" />
-              Clear filters
+              {d.catalog.clear}
             </button>
           )}
         </div>
       </div>
 
       <div
-        aria-label="Product category"
+        aria-label={d.catalog.category}
         className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:thin]"
         role="group"
       >
@@ -86,7 +91,7 @@ export function CatalogToolbar({
               onClick={() => onCategoryChange(category)}
               type="button"
             >
-              {category}
+              {category === "All" ? d.catalog.all : d.categories[category]}
             </button>
           );
         })}
