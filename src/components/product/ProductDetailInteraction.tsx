@@ -17,6 +17,7 @@ import { ProductGallery, type ProductGalleryItem } from "./ProductGallery";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
 import { localizedPath } from "@/i18n/routes";
+import { getLocalizedColorName } from "@/i18n/colors";
 
 export function ProductDetailInteraction({
   product,
@@ -38,7 +39,9 @@ export function ProductDetailInteraction({
   function openInquiry() {
     const productUrl = createProductUrl(product.slug, locale);
     const inquiryUrl = createWhatsAppProductInquiry({
-      colorName: selectedColor?.name,
+      colorName: selectedColor
+        ? getLocalizedColorName(selectedColor.name, locale)
+        : undefined,
       copy: d.inquiry,
       material: product.material,
       phoneNumber: siteConfig.whatsappNumber,
@@ -74,7 +77,7 @@ export function ProductDetailInteraction({
               >
                 {d.product.availableColors}
               </h2>
-              <ProductColorList colors={product.colors} />
+              <ProductColorList colors={product.colors} locale={locale} />
             </section>
           )}
 
@@ -82,7 +85,11 @@ export function ProductDetailInteraction({
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
               {d.product.price}
             </p>
-            <ProductPrice currency={product.currency} price={product.price} />
+            <ProductPrice
+              currency={product.currency}
+              price={product.price}
+              locale={locale}
+            />
           </div>
 
           {product.customizable && (
@@ -97,7 +104,7 @@ export function ProductDetailInteraction({
 
           {whatsappAvailable ? (
             <button
-              aria-label={`${d.product.askWhatsapp}: ${product.name}${selectedColor ? `, ${selectedColor.name}` : ""}`}
+              aria-label={`${d.product.askWhatsapp}: ${product.name}${selectedColor ? `, ${getLocalizedColorName(selectedColor.name, locale)}` : ""}`}
               className="mt-7 inline-flex w-full min-h-11 items-center justify-center gap-2 rounded-md bg-zinc-950 px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:w-auto"
               onClick={openInquiry}
               type="button"

@@ -2,6 +2,7 @@ import { Check } from "lucide-react";
 import type { ProductColor } from "@/types/product";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
+import { getLocalizedColorName } from "@/i18n/colors";
 
 interface ProductColorSelectorProps {
   readonly colors: readonly ProductColor[];
@@ -24,7 +25,8 @@ export function ProductColorSelector({
           {d.product.availableColors}
         </p>
         <p aria-live="polite" className="text-xs text-zinc-500">
-          {locale === "tr" ? "Seçili" : "Selected"}: {selectedColor.name}
+          {locale === "tr" ? "Seçili" : "Selected"}:{" "}
+          {getLocalizedColorName(selectedColor.name, locale)}
         </p>
       </div>
       <div
@@ -37,7 +39,7 @@ export function ProductColorSelector({
 
           return (
             <button
-              aria-label={`${color.name}${selected ? (locale === "tr" ? ", seçili" : ", selected") : ""}`}
+              aria-label={`${getLocalizedColorName(color.name, locale)}${selected ? (locale === "tr" ? ", seçili" : ", selected") : ""}`}
               aria-pressed={selected}
               className={`inline-flex items-center gap-2 rounded-full border py-2 pl-2 pr-3 text-sm font-medium transition ${
                 selected
@@ -53,7 +55,7 @@ export function ProductColorSelector({
                 className="size-5 rounded-full border border-black/15 shadow-sm"
                 style={{ backgroundColor: color.hex }}
               />
-              <span>{color.name}</span>
+              <span>{getLocalizedColorName(color.name, locale)}</span>
               {selected && <Check aria-hidden="true" className="size-3.5" />}
             </button>
           );

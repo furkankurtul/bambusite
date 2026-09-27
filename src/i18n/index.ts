@@ -103,6 +103,7 @@ export type Dictionary = {
     readonly invalidTitle: string;
     readonly invalidText: string;
     readonly available: string;
+    readonly quote: string;
   };
   readonly viewer: {
     readonly previewLabel: string;
@@ -343,6 +344,7 @@ const english: Dictionary = {
     invalidText:
       "This product may be unavailable or the link may be incorrect.",
     available: "Available",
+    quote: "Request a quote",
   },
   viewer: {
     previewLabel: "Product 3D preview",
@@ -666,6 +668,7 @@ const turkish: Dictionary = {
     invalidTitle: "Ürün bulunamadı",
     invalidText: "Bu ürün kullanılamıyor veya bağlantı hatalı olabilir.",
     available: "Mevcut",
+    quote: "Fiyat teklifi alın",
   },
   viewer: {
     ...english.viewer,

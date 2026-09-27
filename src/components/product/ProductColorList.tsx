@@ -1,10 +1,16 @@
 import type { ProductColor } from "@/types/product";
+import type { Locale } from "@/i18n";
+import { getLocalizedColorName } from "@/i18n/colors";
 
 interface ProductColorListProps {
   readonly colors: readonly ProductColor[];
+  readonly locale?: Locale;
 }
 
-export function ProductColorList({ colors }: ProductColorListProps) {
+export function ProductColorList({
+  colors,
+  locale = "tr",
+}: ProductColorListProps) {
   return (
     <ul className="flex flex-wrap gap-2.5" role="list">
       {colors.map((color) => (
@@ -17,8 +23,7 @@ export function ProductColorList({ colors }: ProductColorListProps) {
             className="size-5 rounded-full border border-black/15 shadow-sm"
             style={{ backgroundColor: color.hex }}
           />
-          <span>{color.name}</span>
-          <span className="sr-only">Color value {color.hex}</span>
+          <span>{getLocalizedColorName(color.name, locale)}</span>
         </li>
       ))}
     </ul>

@@ -67,7 +67,11 @@ export function ProductCard({
         </div>
 
         <div className="mt-5 flex items-center justify-between gap-4 border-t border-zinc-100 pt-5">
-          <ProductPrice currency={product.currency} price={product.price} />
+          <ProductPrice
+            currency={product.currency}
+            price={product.price}
+            locale={locale}
+          />
           <Link
             aria-label={`${d.product.details.replace("{name}", displayProduct.name)}`}
             className="inline-flex items-center gap-1 rounded-md text-sm font-semibold text-zinc-800 transition hover:text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"

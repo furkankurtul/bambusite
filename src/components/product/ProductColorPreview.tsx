@@ -1,6 +1,7 @@
 import type { ProductColor } from "@/types/product";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
+import { getLocalizedColorName } from "@/i18n/colors";
 
 interface ProductColorPreviewProps {
   readonly colors: readonly ProductColor[] | undefined;
@@ -30,10 +31,10 @@ export function ProductColorPreview({
             className="size-5 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(24,24,27,0.18)]"
             key={`${color.name}-${color.hex}`}
             style={{ backgroundColor: color.hex }}
-            title={color.name}
+            title={getLocalizedColorName(color.name, locale)}
           >
             <span className="sr-only">
-              {color.name}: {color.hex}
+              {getLocalizedColorName(color.name, locale)}
             </span>
           </li>
         ))}

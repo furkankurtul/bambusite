@@ -24,9 +24,6 @@ export function RelatedProducts({
     <section aria-labelledby="related-products-heading">
       <div className="mb-7 flex items-end justify-between gap-4">
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
-            {d.product.related}
-          </p>
           <h2
             className="text-2xl font-semibold tracking-tight text-zinc-950 sm:text-3xl"
             id="related-products-heading"
