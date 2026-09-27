@@ -4,7 +4,7 @@ import { ArrowLeft, SearchX } from "lucide-react";
 export default function ProductNotFound() {
   return (
     <main className="flex min-h-svh items-center bg-[#f7f7f5] px-5 py-16 sm:px-8">
-      <div className="mx-auto w-full max-w-xl rounded-3xl border border-zinc-200 bg-white px-6 py-14 text-center shadow-sm sm:px-10">
+      <div className="mx-auto w-full max-w-xl rounded-2xl border border-zinc-200 bg-white px-6 py-14 text-center shadow-sm sm:px-10">
         <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-600">
           <SearchX aria-hidden="true" className="size-7" />
         </span>
@@ -18,7 +18,7 @@ export default function ProductNotFound() {
           It may no longer be available, or the address may be incorrect.
         </p>
         <Link
-          className="mt-7 inline-flex items-center gap-2 rounded-xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white hover:bg-zinc-800"
+          className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-md bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
           href="/products"
         >
           <ArrowLeft aria-hidden="true" className="size-4" />

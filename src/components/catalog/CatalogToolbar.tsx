@@ -28,7 +28,7 @@ export function CatalogToolbar({
   searchValue,
 }: CatalogToolbarProps) {
   return (
-    <div className="space-y-5 border-b border-zinc-200 pb-7">
+    <div className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-4 sm:p-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="relative w-full lg:max-w-md">
           <label className="sr-only" htmlFor="catalog-search">
@@ -40,7 +40,7 @@ export function CatalogToolbar({
           />
           <input
             autoComplete="off"
-            className="h-12 w-full rounded-xl border border-zinc-300 bg-white pl-11 pr-4 text-base text-zinc-950 shadow-sm outline-none transition placeholder:text-zinc-400 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20"
+            className="h-12 w-full rounded-lg border border-zinc-300 bg-white pl-11 pr-4 text-base text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-950 focus:ring-2 focus:ring-zinc-950/15"
             id="catalog-search"
             onChange={(event) => onSearchChange(event.target.value)}
             placeholder="Search products"
@@ -55,7 +55,7 @@ export function CatalogToolbar({
           </p>
           {hasActiveFilters && (
             <button
-              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-zinc-700 hover:text-zinc-950"
+              className="inline-flex min-h-10 items-center gap-1.5 rounded-md px-2 py-1 text-sm font-semibold text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
               onClick={onClear}
               type="button"
             >
@@ -80,7 +80,7 @@ export function CatalogToolbar({
               className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-offset-2 ${
                 selected
                   ? "border-zinc-950 bg-zinc-950 text-white"
-                  : "border-zinc-300 bg-white text-zinc-700 hover:border-zinc-400 hover:text-zinc-950"
+                  : "border-zinc-300 bg-white text-zinc-700 hover:border-zinc-950 hover:text-zinc-950"
               }`}
               key={category}
               onClick={() => onCategoryChange(category)}

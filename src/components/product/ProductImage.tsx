@@ -5,18 +5,22 @@ import { Box } from "lucide-react";
 import { useState } from "react";
 
 interface ProductImageProps {
+  readonly aspectRatioClass?: string;
   readonly className?: string;
   readonly compactFallback?: boolean;
   readonly name: string;
+  readonly objectFit?: "contain" | "cover";
   readonly priority?: boolean;
   readonly sizes?: string;
   readonly src: string | undefined;
 }
 
 export function ProductImage({
+  aspectRatioClass = "aspect-square",
   className = "",
   compactFallback = false,
   name,
+  objectFit = "cover",
   priority = false,
   sizes = "(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw",
   src,
@@ -25,7 +29,7 @@ export function ProductImage({
 
   return (
     <div
-      className={`relative aspect-[4/3] overflow-hidden bg-zinc-100 ${className}`}
+      className={`relative ${aspectRatioClass} overflow-hidden bg-[#f1f1ee] ${className}`}
     >
       <div
         aria-hidden={!failed}
@@ -52,7 +56,9 @@ export function ProductImage({
       {!failed && src && (
         <Image
           alt={name}
-          className="object-cover transition duration-300 group-hover:scale-[1.02] motion-reduce:transition-none"
+          className={`object-center transition duration-300 group-hover:scale-[1.02] motion-reduce:transition-none ${
+            objectFit === "contain" ? "object-contain" : "object-cover"
+          }`}
           fill
           onError={() => setFailed(true)}
           priority={priority}

@@ -125,7 +125,7 @@ export function CustomPrintRequestForm({
     return (
       <section
         aria-labelledby="demo-complete"
-        className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-10"
+        className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-10"
       >
         <CheckCircle2
           aria-hidden="true"
@@ -158,7 +158,7 @@ export function CustomPrintRequestForm({
 
   return (
     <form
-      className="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8"
+      className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
       noValidate
       onSubmit={handleSubmit}
     >

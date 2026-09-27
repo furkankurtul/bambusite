@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, AtSign, Camera, MessageCircle, Send } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import {
+  getConfiguredEmailHref,
+  getConfiguredExternalUrl,
+} from "@/lib/site-links";
 import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -13,7 +17,7 @@ export const metadata: Metadata = {
 const contactMethods = [
   {
     label: "Instagram",
-    href: siteConfig.instagramUrl,
+    href: getConfiguredExternalUrl(siteConfig.instagramUrl) ?? "",
     description: "Follow along or send a message through Instagram.",
     icon: Camera,
     external: true,
@@ -27,7 +31,7 @@ const contactMethods = [
   },
   {
     label: "Email",
-    href: siteConfig.email ? `mailto:${siteConfig.email}` : "",
+    href: getConfiguredEmailHref(siteConfig.email) ?? "",
     description: siteConfig.email,
     icon: AtSign,
     external: false,
@@ -69,7 +73,7 @@ export default function ContactPage() {
                 return (
                   <li key={method.label}>
                     <a
-                      className="group flex min-h-40 flex-col justify-between rounded-xl border border-zinc-200 bg-white p-6 transition-colors hover:border-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
+                      className="group flex min-h-40 flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:border-zinc-950 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
                       href={method.href}
                       rel={method.external ? "noreferrer" : undefined}
                       target={method.external ? "_blank" : undefined}

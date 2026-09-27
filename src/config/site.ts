@@ -1,7 +1,7 @@
 // Replace these placeholders when the project identity is decided.
 export const siteConfig = {
   name: "3D Print Catalog",
-  description: "A 3D printing product catalog. Development foundation only.",
+  description: "Explore 3D printed products and start a custom print request.",
   siteUrl: "",
   instagramUrl: "https://www.instagram.com/REPLACE_ME/",
   whatsappNumber: "",
@@ -13,6 +13,11 @@ export const siteConfig = {
     materialLabel: "Material",
     productLabel: "Product",
   },
-  // Add catalog and information routes only once those pages exist.
-  primaryNavigation: [{ label: "Home", href: "/" }],
+  primaryNavigation: [
+    { label: "Products", href: "/products" },
+    { label: "Custom Print", href: "/custom-print" },
+    { label: "About", href: "/about" },
+    { label: "FAQ", href: "/faq" },
+    { label: "Contact", href: "/contact" },
+  ],
 } as const;

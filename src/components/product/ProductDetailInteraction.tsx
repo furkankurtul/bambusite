@@ -94,7 +94,7 @@ export function ProductDetailInteraction({
         {whatsappAvailable ? (
           <button
             aria-label={`Ask on WhatsApp about ${product.name}${selectedColor ? ` in ${selectedColor.name}` : ""}`}
-            className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:w-auto"
+            className="mt-7 inline-flex w-full min-h-11 items-center justify-center gap-2 rounded-md bg-zinc-950 px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:w-auto"
             onClick={openInquiry}
             type="button"
           >
@@ -103,7 +103,7 @@ export function ProductDetailInteraction({
           </button>
         ) : (
           <Link
-            className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-950 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:w-auto"
+            className="mt-7 inline-flex w-full min-h-11 items-center justify-center gap-2 rounded-md bg-zinc-950 px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:w-auto"
             href={`/contact?product=${encodeURIComponent(product.slug)}`}
           >
             Ask about this product

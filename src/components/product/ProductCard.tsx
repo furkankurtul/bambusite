@@ -14,7 +14,7 @@ export function ProductCard({ product, thumbnailSrc }: ProductCardProps) {
   const detailHref = `/products/${product.slug}`;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:border-zinc-300 hover:shadow-lg motion-reduce:transform-none motion-reduce:transition-none">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md motion-reduce:transform-none motion-reduce:transition-none">
       <Link
         aria-label={`View ${product.name}`}
         className="block focus-visible:outline-offset-[-3px]"
@@ -60,7 +60,7 @@ export function ProductCard({ product, thumbnailSrc }: ProductCardProps) {
           <ProductPrice currency={product.currency} price={product.price} />
           <Link
             aria-label={`View details for ${product.name}`}
-            className="inline-flex items-center gap-1 rounded-md text-sm font-semibold text-zinc-800 transition hover:text-sky-800"
+            className="inline-flex items-center gap-1 rounded-md text-sm font-semibold text-zinc-800 transition hover:text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
             href={detailHref}
           >
             View product

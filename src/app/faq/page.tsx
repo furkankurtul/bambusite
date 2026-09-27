@@ -81,7 +81,7 @@ export default function FaqPage() {
 
         <section
           aria-labelledby="faq-cta"
-          className="mt-12 rounded-xl bg-zinc-950 p-6 text-white sm:mt-16 sm:p-10"
+          className="mt-12 rounded-2xl bg-zinc-950 p-6 text-white sm:mt-16 sm:p-10"
         >
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
             Still have a project in mind?

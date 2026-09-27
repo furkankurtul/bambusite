@@ -22,9 +22,11 @@ export function ProductGallery({ items, productName }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
       <ProductImage
-        className="rounded-3xl border border-zinc-200"
+        aspectRatioClass="aspect-[4/3]"
+        className="rounded-2xl border border-zinc-200"
         key={selectedItem.id}
         name={productName}
+        objectFit="contain"
         sizes="(min-width: 1024px) 70vw, 100vw"
         src={selectedItem.src}
       />

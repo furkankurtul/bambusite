@@ -9,6 +9,7 @@ import {
   type ProductGalleryItem,
 } from "@/components/product/ProductGallery";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
+import { siteConfig } from "@/config/site";
 import {
   getProductBySlug,
   getProducts,
@@ -19,6 +20,7 @@ import {
   resolveProductThumbnailSources,
 } from "@/lib/products/media";
 import { resolvePublicAsset } from "@/lib/public-assets";
+import { getConfiguredExternalUrl } from "@/lib/site-links";
 import type { Product } from "@/types/product";
 
 interface ProductPageProps {
@@ -39,6 +41,9 @@ export async function generateMetadata({
   if (!product) notFound();
 
   const thumbnail = await resolvePublicAsset(product.thumbnail);
+  const siteUrl = getConfiguredExternalUrl(siteConfig.siteUrl);
+  const openGraphImage =
+    thumbnail && siteUrl ? new URL(thumbnail, siteUrl).toString() : undefined;
 
   return {
     title: product.name,
@@ -47,7 +52,9 @@ export async function generateMetadata({
       title: product.name,
       description: product.shortDescription,
       type: "website",
-      ...(thumbnail ? { images: [{ url: thumbnail, alt: product.name }] } : {}),
+      ...(openGraphImage
+        ? { images: [{ url: openGraphImage, alt: product.name }] }
+        : {}),
     },
   };
 }
