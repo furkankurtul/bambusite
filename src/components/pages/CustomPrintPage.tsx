@@ -1,15 +1,8 @@
-import type { Metadata } from "next";
 import { FileText, Layers3, MessageSquare } from "lucide-react";
 import { CustomPrintRequestForm } from "@/components/custom-print/CustomPrintRequestForm";
 import { PRODUCT_MATERIALS } from "@/types/product";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
-
-export const metadata: Metadata = {
-  title: "Custom 3D Print Request",
-  description:
-    "Request a custom 3D print for your model or idea and share the details needed to get started.",
-};
 
 export function renderCustomPrintPage(locale: Locale) {
   const d = getDictionary(locale);
@@ -24,8 +17,7 @@ export function renderCustomPrintPage(locale: Locale) {
             {d.custom.intro}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg sm:leading-8">
-            Share a ready-made 3D file or describe what you would like to make.
-            The details below provide a clear starting point for a custom print.
+            {d.custom.description}
           </p>
         </header>
 

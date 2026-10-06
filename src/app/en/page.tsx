@@ -1,10 +1,7 @@
-import type { Metadata } from "next";
 import { renderHome } from "@/components/pages/HomePage";
+import { getPageMetadata } from "@/i18n/metadata";
 
-export const metadata: Metadata = {
-  title: "3D Print Catalog",
-  description: "Explore 3D printed products and request a custom print.",
-};
+export const metadata = getPageMetadata("en", "home");
 
 export default function EnglishHome() {
   return renderHome("en");

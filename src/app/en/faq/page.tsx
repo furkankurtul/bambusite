@@ -1,11 +1,7 @@
-import type { Metadata } from "next";
 import { renderFaqPage } from "@/components/pages/FaqPage";
+import { getPageMetadata } from "@/i18n/metadata";
 
-export const metadata: Metadata = {
-  title: "Frequently Asked Questions",
-  description:
-    "Answers about custom 3D printing, materials, models, colors, and production details.",
-};
+export const metadata = getPageMetadata("en", "faq");
 
 export default function EnglishFaqPage() {
   return renderFaqPage("en");

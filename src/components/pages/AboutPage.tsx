@@ -1,15 +1,8 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Boxes, Lightbulb, Wrench } from "lucide-react";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
 import { localizedPath } from "@/i18n/routes";
-
-export const metadata: Metadata = {
-  title: "About 3D Printing",
-  description:
-    "Learn about the catalog's focus on 3D printed products, custom production, prototypes, and functional parts.",
-};
 
 export function renderAboutPage(locale: Locale) {
   const d = getDictionary(locale);

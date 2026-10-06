@@ -21,7 +21,7 @@ export interface ModelBounds {
 
 export type ModelLoadState =
   | { readonly progress?: number; readonly status: "loading" }
-  | { readonly message: string; readonly status: "error" }
+  | { readonly status: "error" }
   | {
       readonly bounds: ModelBounds;
       readonly geometry: BufferGeometry;
@@ -66,10 +66,7 @@ export function useSTLGeometry(
         } catch {
           geometry.dispose();
           if (active) {
-            setState({
-              status: "error",
-              message: "The model file could not be prepared for display.",
-            });
+            setState({ status: "error" });
           }
         }
       },
@@ -83,10 +80,7 @@ export function useSTLGeometry(
       },
       () => {
         if (active) {
-          setState({
-            status: "error",
-            message: "The model file could not be loaded.",
-          });
+          setState({ status: "error" });
         }
       },
     );

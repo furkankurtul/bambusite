@@ -1,11 +1,7 @@
-import type { Metadata } from "next";
 import { renderAboutPage } from "@/components/pages/AboutPage";
+import { getPageMetadata } from "@/i18n/metadata";
 
-export const metadata: Metadata = {
-  title: "About 3D Printing",
-  description:
-    "Explore 3D printed products, custom production, prototypes, and functional parts.",
-};
+export const metadata = getPageMetadata("en", "about");
 
 export default function EnglishAboutPage() {
   return renderAboutPage("en");

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, AtSign, Camera, MessageCircle, Send } from "lucide-react";
 import { siteConfig } from "@/config/site";
@@ -10,12 +9,6 @@ import { createWhatsAppUrl } from "@/lib/whatsapp";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
 import { localizedPath } from "@/i18n/routes";
-
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Get in touch through the configured email, Instagram, WhatsApp, or a custom print request.",
-};
 
 export function renderContactPage(locale: Locale) {
   const d = getDictionary(locale);

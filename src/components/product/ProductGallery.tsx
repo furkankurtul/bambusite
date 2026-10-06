@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { ProductImage } from "./ProductImage";
+import type { Locale } from "@/i18n";
+import { getDictionary } from "@/i18n";
 
 export interface ProductGalleryItem {
   readonly id: string;
@@ -10,10 +12,16 @@ export interface ProductGalleryItem {
 
 interface ProductGalleryProps {
   readonly items: readonly ProductGalleryItem[];
+  readonly locale: Locale;
   readonly productName: string;
 }
 
-export function ProductGallery({ items, productName }: ProductGalleryProps) {
+export function ProductGallery({
+  items,
+  locale,
+  productName,
+}: ProductGalleryProps) {
+  const d = getDictionary(locale);
   const [selectedId, setSelectedId] = useState(items[0]?.id);
   const selectedItem = items.find((item) => item.id === selectedId) ?? items[0];
 
@@ -33,7 +41,7 @@ export function ProductGallery({ items, productName }: ProductGalleryProps) {
 
       {items.length > 1 && (
         <div
-          aria-label={`${productName} images`}
+          aria-label={`${productName} ${d.product.photos}`}
           className="flex gap-3"
           role="group"
         >
@@ -42,7 +50,7 @@ export function ProductGallery({ items, productName }: ProductGalleryProps) {
 
             return (
               <button
-                aria-label={`Show ${productName} image ${index + 1}`}
+                aria-label={`${d.product.showImage} ${productName} ${index + 1}`}
                 aria-pressed={selected}
                 className={`w-24 shrink-0 overflow-hidden rounded-xl border-2 bg-white transition ${
                   selected
@@ -56,7 +64,7 @@ export function ProductGallery({ items, productName }: ProductGalleryProps) {
                 <ProductImage
                   compactFallback
                   key={item.id}
-                  name={`${productName} image ${index + 1}`}
+                  name={`${productName} ${d.product.image} ${index + 1}`}
                   sizes="96px"
                   src={item.src}
                 />

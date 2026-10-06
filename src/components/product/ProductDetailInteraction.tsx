@@ -57,7 +57,11 @@ export function ProductDetailInteraction({
   return (
     <>
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,0.85fr)] lg:gap-14 xl:gap-20">
-        <ProductGallery items={galleryItems} productName={product.name} />
+        <ProductGallery
+          items={galleryItems}
+          locale={locale}
+          productName={product.name}
+        />
         <div className="lg:py-3">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-zinc-500">
             {d.categories[product.category]}

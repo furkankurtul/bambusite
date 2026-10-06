@@ -24,7 +24,15 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="tr" className="h-full antialiased">
+    <html lang="tr" className="h-full antialiased" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'document.documentElement.lang = window.location.pathname === "/en" || window.location.pathname.startsWith("/en/") ? "en" : "tr";',
+          }}
+        />
+      </head>
       <body className="min-h-full font-sans">
         <div className="flex min-h-svh flex-col">
           <SiteHeader />

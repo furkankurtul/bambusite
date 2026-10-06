@@ -53,22 +53,18 @@ src/
   components/
     catalog/           Search, category filtering, and catalog empty state
     layout/            Shared header and footer
-    ui/                Future reusable UI primitives
     product/           Product cards, images, colors, and prices
     three/             Production STL loading, camera fitting, and viewer errors
-    home/              Future homepage sections
   config/site.ts       Placeholder identity, contact links, and navigation
   data/products.ts     Local sample data behind the repository boundary
   lib/products/        Async repository, validation, checks, and utilities
   types/product.ts     Product domain types and central allowed values
 public/
-  models/              STL files and the original development test fixture
-  products/            Future product thumbnails/images
-  images/              General static imagery
+  models/              Product STL files
+  products/            Product thumbnails and gallery images
 ```
 
-Reserved component directories contain only `.gitkeep`, so Git preserves the
-structure. No placeholder components are added. `@/*` maps to `src/*`.
+`@/*` maps to `src/*`.
 
 ## Architecture
 
@@ -184,7 +180,7 @@ a Next.js dynamic import with server rendering disabled for `ModelViewer`.
 `ModelViewer` owns color and camera controls, while `STLModel` owns the loaded
 geometry and its single `MeshStandardMaterial`. `STLLoader` reads each active
 product's configured path from `public/models`; the separate development-only
-sanity route retains `public/models/dev-test.stl` for browser verification.
+sanity route uses a procedural cube for browser verification.
 
 STL files do not encode dependable units, so scene units are treated as
 millimeters. Geometry preparation validates the position data, supplies normals

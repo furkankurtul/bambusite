@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
@@ -11,22 +10,23 @@ import {
   Sparkles,
 } from "lucide-react";
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { getFeaturedProducts } from "@/lib/products";
+import { getFeaturedProducts, getProducts } from "@/lib/products";
 import { resolveProductThumbnailSources } from "@/lib/products/media";
 import { PRODUCT_CATEGORIES } from "@/types/product";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
 import { localizedPath } from "@/i18n/routes";
 
-export const metadata: Metadata = {
-  title: "3D Printed Products and Custom Prints",
-  description:
-    "Explore ready-to-print products or request a custom 3D print for your next idea.",
-};
-
 export async function renderHome(locale: Locale) {
   const d = getDictionary(locale);
-  const featuredProducts = (await getFeaturedProducts()).slice(0, 4);
+  const [featuredResults, activeProducts] = await Promise.all([
+    getFeaturedProducts(),
+    getProducts(),
+  ]);
+  const featuredProducts = featuredResults.slice(0, 4);
+  const availableCategories = PRODUCT_CATEGORIES.filter((category) =>
+    activeProducts.some((product) => product.category === category),
+  );
   const thumbnailSources =
     await resolveProductThumbnailSources(featuredProducts);
 
@@ -105,7 +105,7 @@ export async function renderHome(locale: Locale) {
             {d.home.categoriesIntro}
           </SectionHeading>
           <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {PRODUCT_CATEGORIES.map((category, index) => (
+            {availableCategories.map((category, index) => (
               <li key={category}>
                 <Link
                   className="group flex min-h-28 items-center justify-between rounded-lg border border-zinc-200 bg-white p-5 transition-colors hover:border-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"

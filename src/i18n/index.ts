@@ -94,6 +94,8 @@ export type Dictionary = {
     readonly comingSoon: string;
     readonly gallery: string;
     readonly photos: string;
+    readonly image: string;
+    readonly showImage: string;
     readonly overview: string;
     readonly aboutProduct: string;
     readonly specifications: string;
@@ -142,7 +144,9 @@ export type Dictionary = {
     readonly material: string;
     readonly chooseMaterial: string;
     readonly dimensions: string;
+    readonly dimensionsPlaceholder: string;
     readonly description: string;
+    readonly descriptionPlaceholder: string;
     readonly file: string;
     readonly attach: string;
     readonly chooseFile: string;
@@ -334,6 +338,8 @@ const english: Dictionary = {
     comingSoon: "Coming soon",
     gallery: "Gallery",
     photos: "Product photos",
+    image: "image",
+    showImage: "Show image",
     overview: "Overview",
     aboutProduct: "About this product",
     specifications: "Specifications",
@@ -395,7 +401,10 @@ const english: Dictionary = {
     material: "Preferred material",
     chooseMaterial: "Choose a material",
     dimensions: "Approximate dimensions",
+    dimensionsPlaceholder: "For example, 120 × 80 × 40 mm",
     description: "Project description",
+    descriptionPlaceholder:
+      "What would you like to print? Include its purpose, important measurements, and the details that matter.",
     file: "Model file",
     attach: "Attach a model file",
     chooseFile: "Choose file",
@@ -502,7 +511,8 @@ const english: Dictionary = {
     customText:
       "Share a model or idea and include the details needed for a useful review.",
     request: "Start a request",
-    noConfig: "Contact details will appear here when they are configured.",
+    noConfig:
+      "Contact details are not configured for this friend test. The custom print form is a preview and does not send a request yet.",
   },
   inquiry: {
     greeting: "Hello,",
@@ -659,6 +669,8 @@ const turkish: Dictionary = {
     comingSoon: "Yakında",
     gallery: "Galeri",
     photos: "Ürün fotoğrafları",
+    image: "görsel",
+    showImage: "Görseli göster",
     overview: "Genel bakış",
     aboutProduct: "Bu ürün hakkında",
     specifications: "Özellikler",
@@ -722,7 +734,10 @@ const turkish: Dictionary = {
     material: "Tercih edilen malzeme",
     chooseMaterial: "Malzeme seçin",
     dimensions: "Yaklaşık boyutlar",
+    dimensionsPlaceholder: "Örneğin 120 × 80 × 40 mm",
     description: "Proje açıklaması",
+    descriptionPlaceholder:
+      "Ne üretmek istediğinizi, kullanım amacını, önemli ölçüleri ve gerekli ayrıntıları yazın.",
     file: "Model dosyası",
     attach: "Model dosyası ekle",
     chooseFile: "Dosya seç",
@@ -833,7 +848,8 @@ const turkish: Dictionary = {
     customText:
       "Bir model veya fikir paylaşın ve yararlı bir inceleme için gereken ayrıntıları ekleyin.",
     request: "Talep başlat",
-    noConfig: "İletişim bilgileri yapılandırıldığında burada görünecek.",
+    noConfig:
+      "Bu arkadaş testi için iletişim bilgileri henüz yapılandırılmadı. Özel baskı formu bir ön izlemedir ve henüz talep göndermez.",
   },
   inquiry: {
     greeting: "Merhaba,",

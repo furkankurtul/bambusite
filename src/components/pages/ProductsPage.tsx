@@ -1,16 +1,9 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ProductCatalog } from "@/components/catalog/ProductCatalog";
 import { getProducts } from "@/lib/products";
 import { resolveProductThumbnailSources } from "@/lib/products/media";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
-
-export const metadata: Metadata = {
-  title: "Products",
-  description:
-    "Browse available 3D printed models, functional parts, and customizable designs.",
-};
 
 export async function renderProductsPage(locale: Locale) {
   const d = getDictionary(locale);

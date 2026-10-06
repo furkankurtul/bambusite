@@ -278,7 +278,7 @@ export function CustomPrintRequestForm({
             className={inputClass()}
             id="dimensions"
             name="dimensions"
-            placeholder="For example, 120 × 80 × 40 mm"
+            placeholder={d.custom.dimensionsPlaceholder}
             onChange={(event) => updateValue("dimensions", event.target.value)}
             value={values.dimensions}
           />
@@ -296,7 +296,7 @@ export function CustomPrintRequestForm({
             id="description"
             name="description"
             onChange={(event) => updateValue("description", event.target.value)}
-            placeholder="What would you like to print? Include its purpose, any important measurements, and details that matter."
+            placeholder={d.custom.descriptionPlaceholder}
             value={values.description}
             {...describedBy(errors.description, "description")}
           />
@@ -308,8 +308,10 @@ export function CustomPrintRequestForm({
           className="text-sm font-semibold text-zinc-950"
           htmlFor="project-file"
         >
-          Model file{" "}
-          <span className="font-normal text-zinc-500">(optional)</span>
+          {d.custom.file}{" "}
+          <span className="font-normal text-zinc-500">
+            ({d.custom.optional})
+          </span>
         </label>
         <div
           className={`mt-2 rounded-lg border border-dashed p-5 sm:p-6 ${errors.file ? "border-red-600 bg-red-50" : "border-zinc-300 bg-[#f7f7f5]"}`}

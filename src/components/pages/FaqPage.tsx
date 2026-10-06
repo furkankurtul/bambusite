@@ -1,62 +1,9 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { FaqAccordion } from "@/components/information/FaqAccordion";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
 import { localizedPath } from "@/i18n/routes";
-
-export const metadata: Metadata = {
-  title: "Frequently Asked Questions",
-  description:
-    "Answers to common questions about custom 3D printing, materials, models, colors, and production details.",
-};
-
-/* The translated FAQ content lives in src/i18n. */
-const faqItems = [
-  {
-    question: "What materials can be printed?",
-    answer:
-      "Material options depend on the project and its intended use. The custom print request form lists the currently available preferences, and the final choice can be discussed before printing.",
-  },
-  {
-    question: "Can I choose a custom color?",
-    answer:
-      "You can share a preferred color in your request. Color availability and the best material for the project can be confirmed as part of the print details.",
-  },
-  {
-    question: "Can I send my own STL file?",
-    answer:
-      "Yes. You can attach an STL file to a custom print request, along with any details that help explain how you want the finished piece to be used.",
-  },
-  {
-    question: "How long does printing take?",
-    answer:
-      "Print time depends on the model's size, shape, material, quantity, and selected settings. A more specific timeline can be discussed after the project is reviewed.",
-  },
-  {
-    question: "Can you create custom designs?",
-    answer:
-      "You can describe your idea in a custom print request. The information needed to move from an idea to a printable model depends on the project, so the next steps are considered case by case.",
-  },
-  {
-    question: "What file formats are accepted?",
-    answer:
-      "The request form accepts STL, 3MF, OBJ, and STEP files. Include any relevant notes about the model, dimensions, or intended use with your request.",
-  },
-  {
-    question: "What sizes can be printed?",
-    answer:
-      "Suitable print size depends on the model, its geometry, material, and the available printing setup. Share approximate dimensions so the project can be reviewed appropriately.",
-  },
-  {
-    question: "Will the physical color exactly match the screen?",
-    answer:
-      "Screen settings, lighting, material finish, and the printing process can all affect how color appears. A physical print may differ from the color shown on a display.",
-  },
-] as const;
-
-void faqItems;
 
 export function renderFaqPage(locale: Locale) {
   const d = getDictionary(locale);
@@ -80,7 +27,7 @@ export function renderFaqPage(locale: Locale) {
           className="mt-12 max-w-4xl sm:mt-16"
         >
           <h2 id="faq-list" className="sr-only">
-            Frequently asked questions
+            {d.faq.title}
           </h2>
           <FaqAccordion items={d.faq.items} />
         </section>

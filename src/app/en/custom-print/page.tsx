@@ -1,10 +1,7 @@
-import type { Metadata } from "next";
 import { renderCustomPrintPage } from "@/components/pages/CustomPrintPage";
+import { getPageMetadata } from "@/i18n/metadata";
 
-export const metadata: Metadata = {
-  title: "Custom 3D Print Request",
-  description: "Request a custom 3D print for your model or idea.",
-};
+export const metadata = getPageMetadata("en", "customPrint");
 
 export default function EnglishCustomPrintPage() {
   return renderCustomPrintPage("en");

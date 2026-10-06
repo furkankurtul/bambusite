@@ -146,7 +146,7 @@ function ModelLoader({
   if (loadState.status === "error") {
     return (
       <ViewerFailure
-        message={loadState.message}
+        message={getDictionary(locale).viewer.loadError}
         onRetry={onRetry}
         retryLabel={getDictionary(locale).viewer.tryAgain}
         locale={locale}
@@ -221,7 +221,7 @@ function ModelCanvas({
   return (
     <>
       <div
-        aria-label="Interactive 3D model. Drag horizontally to rotate and scroll or pinch to zoom."
+        aria-label={d.viewer.instructions}
         className="product-model-canvas absolute inset-0"
         role="group"
       >
