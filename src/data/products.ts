@@ -25,7 +25,7 @@ const localProducts = [
     },
     thumbnail: "/products/caraxes/cover.png",
     images: ["/products/caraxes/01.png"],
-    model: "/models/caraxes-single-color.stl",
+    model: "/models/caraxes-web.stl",
     colors: [
       { name: "Graphite", hex: "#27272A" },
       { name: "Crimson", hex: "#DC2626" },

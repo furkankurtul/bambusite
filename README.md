@@ -60,8 +60,9 @@ src/
   lib/products/        Async repository, validation, checks, and utilities
   types/product.ts     Product domain types and central allowed values
 public/
-  models/              Product STL files
+  models/              Web-delivery STL files
   products/            Product thumbnails and gallery images
+assets/models/         Original production STL source files, excluded from export
 ```
 
 `@/*` maps to `src/*`.
@@ -80,9 +81,11 @@ Future product UI must use repository functions such as `getProducts()`,
 `src/lib/products`, rather than importing `src/data` directly. This keeps UI
 independent from local storage and allows a later CMS/database adapter.
 
-STL files go in `public/models` and are addressed as `/models/file.stl`. Product
-listings use images from `public/products` and do not load STL geometry or the 3D
-viewer runtime.
+Web-delivery STL files go in `public/models` and are addressed as
+`/models/file.stl`. Keep source or production STL files outside `public/`, such
+as `assets/models/`, so static deployments contain only optimized viewer assets.
+Product listings use images from `public/products` and do not load STL geometry or
+the 3D viewer runtime.
 
 ## Isolated 3D sanity check
 
