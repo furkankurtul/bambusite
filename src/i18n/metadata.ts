@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { Locale } from "./index";
 
 type StaticPage =
-  "about" | "contact" | "customPrint" | "faq" | "home" | "products";
+  "about" | "contact" | "customPrint" | "faq" | "guide" | "home" | "products";
 
 const pageMetadata: Record<
   Locale,
@@ -31,6 +31,11 @@ const pageMetadata: Record<
       title: "Frequently Asked Questions",
       description:
         "Answers about 3D printing materials, models, colors, and production details.",
+    },
+    guide: {
+      title: "3D Printing Guide",
+      description:
+        "Practical notes on 3D printing materials, model files, quality, and preparing a print request.",
     },
     contact: {
       title: "Contact",
@@ -63,6 +68,11 @@ const pageMetadata: Record<
       title: "Sık Sorulan Sorular",
       description:
         "3D baskı malzemeleri, modeller, renkler ve üretim ayrıntıları hakkındaki yanıtlar.",
+    },
+    guide: {
+      title: "3D Baskı Rehberi",
+      description:
+        "3D baskı malzemeleri, model dosyaları, kalite ve baskı talebi hazırlığı için pratik notlar.",
     },
     contact: {
       title: "İletişim",

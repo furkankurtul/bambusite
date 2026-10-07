@@ -29,7 +29,7 @@ export function SiteFooter() {
       : undefined,
     whatsAppUrl
       ? {
-          label: "WhatsApp",
+          label: d.product.askWhatsapp,
           href: whatsAppUrl,
           icon: MessageCircle,
           external: true,
@@ -63,6 +63,7 @@ export function SiteFooter() {
             {[
               { label: d.nav.products, href: "/products" },
               { label: d.nav.customPrint, href: "/custom-print" },
+              { label: d.nav.guide, href: "/guide" },
               { label: d.nav.about, href: "/about" },
               { label: d.nav.faq, href: "/faq" },
               { label: d.nav.contact, href: "/contact" },

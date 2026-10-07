@@ -17,6 +17,7 @@ export function SiteHeader() {
   const navigation = [
     { label: d.nav.products, href: "/products" },
     { label: d.nav.customPrint, href: "/custom-print" },
+    { label: d.nav.guide, href: "/guide" },
     { label: d.nav.about, href: "/about" },
     { label: d.nav.faq, href: "/faq" },
     { label: d.nav.contact, href: "/contact" },
@@ -35,7 +36,7 @@ export function SiteHeader() {
 
         <nav
           aria-label={d.nav.primary}
-          className="hidden items-center gap-1 lg:flex"
+          className="hidden items-center gap-1 xl:flex"
         >
           {navigation.map((item) => {
             const active = pathname === localizedPath(locale, item.href);
@@ -57,7 +58,7 @@ export function SiteHeader() {
         </nav>
 
         <Link
-          className="hidden min-h-10 items-center justify-center rounded-md bg-zinc-950 px-4 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 lg:inline-flex"
+          className="hidden min-h-10 items-center justify-center rounded-md bg-zinc-950 px-4 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 xl:inline-flex"
           href={localizedPath(locale, "/custom-print")}
         >
           {d.nav.startRequest}
@@ -67,7 +68,7 @@ export function SiteHeader() {
           aria-controls="mobile-navigation"
           aria-expanded={menuOpen}
           aria-label={menuOpen ? d.nav.close : d.nav.mobile}
-          className="inline-flex size-10 items-center justify-center rounded-md text-zinc-950 transition-colors hover:bg-zinc-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 lg:hidden"
+          className="inline-flex size-10 items-center justify-center rounded-md text-zinc-950 transition-colors hover:bg-zinc-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 xl:hidden"
           onClick={() => setMenuOpen((open) => !open)}
           type="button"
         >
@@ -82,7 +83,7 @@ export function SiteHeader() {
       {menuOpen ? (
         <nav
           aria-label={d.nav.mobile}
-          className="border-t border-zinc-200 bg-[#f7f7f5] px-5 py-4 sm:px-8 lg:hidden"
+          className="border-t border-zinc-200 bg-[#f7f7f5] px-5 py-4 sm:px-8 xl:hidden"
           id="mobile-navigation"
         >
           <div className="mx-auto grid max-w-[90rem] gap-1">
@@ -107,7 +108,7 @@ export function SiteHeader() {
           </div>
         </nav>
       ) : null}
-      <div className="absolute right-16 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-md border border-zinc-200 bg-white p-1 lg:right-52">
+      <div className="absolute right-16 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-md border border-zinc-200 bg-white p-1 xl:right-52">
         {(["tr", "en"] as const).map((target) => (
           <Link
             aria-current={locale === target ? "true" : undefined}

@@ -49,6 +49,7 @@ src/
   app/                 App Router layout, styles, and foundation homepage
     dev/products/      Development-only product repository verification
     dev/three/         Isolated development-only cube and error fallback
+    guide/             Localized 3D printing guide routes
     products/          Public product catalog route
   components/
     catalog/           Search, category filtering, and catalog empty state
@@ -240,6 +241,8 @@ the equivalent `/en` paths. Typed dictionaries live in `src/i18n`, while
 product slugs, category IDs, materials, assets, and STL paths remain shared
 between locales. The header language switcher keeps the current page and
 preserves catalog query parameters when switching in the browser.
+The static printing guide is available at `/guide` and `/en/guide`; its typed
+content lives alongside other localized customer-facing copy in `src/i18n`.
 
 ## Future roadmap
 

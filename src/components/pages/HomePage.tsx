@@ -2,33 +2,31 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import {
   ArrowRight,
+  BookOpen,
   Box,
   Boxes,
   Layers3,
+  MessageCircle,
   Printer,
-  Ruler,
   Sparkles,
 } from "lucide-react";
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { getFeaturedProducts, getProducts } from "@/lib/products";
-import { resolveProductThumbnailSources } from "@/lib/products/media";
-import { PRODUCT_CATEGORIES } from "@/types/product";
+import { siteConfig } from "@/config/site";
 import type { Locale } from "@/i18n";
 import { getDictionary } from "@/i18n";
 import { localizedPath } from "@/i18n/routes";
+import { getFeaturedProducts } from "@/lib/products";
+import { resolveProductThumbnailSources } from "@/lib/products/media";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 export async function renderHome(locale: Locale) {
   const d = getDictionary(locale);
-  const [featuredResults, activeProducts] = await Promise.all([
-    getFeaturedProducts(),
-    getProducts(),
-  ]);
-  const featuredProducts = featuredResults.slice(0, 4);
-  const availableCategories = PRODUCT_CATEGORIES.filter((category) =>
-    activeProducts.some((product) => product.category === category),
-  );
+  const featuredProducts = (await getFeaturedProducts()).slice(0, 4);
   const thumbnailSources =
     await resolveProductThumbnailSources(featuredProducts);
+  const whatsAppUrl = createWhatsAppUrl({
+    phoneNumber: siteConfig.whatsappNumber,
+  });
 
   return (
     <main className="min-h-svh bg-[#f7f7f5] text-zinc-950">
@@ -93,38 +91,81 @@ export async function renderHome(locale: Locale) {
       </section>
 
       <section
-        aria-labelledby="categories"
+        aria-labelledby="custom-print"
         className="border-b border-zinc-200"
       >
         <div className="mx-auto max-w-[90rem] px-5 py-12 sm:px-8 sm:py-16 lg:px-10 lg:py-20">
           <SectionHeading
-            eyebrow={d.home.categoriesEyebrow}
-            id="categories"
-            title={d.home.categoriesTitle}
+            eyebrow={d.home.customEyebrow}
+            id="custom-print"
+            title={d.home.customTitle}
           >
-            {d.home.categoriesIntro}
+            {d.home.customText}
           </SectionHeading>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {availableCategories.map((category, index) => (
-              <li key={category}>
-                <Link
-                  className="group flex min-h-28 items-center justify-between rounded-lg border border-zinc-200 bg-white p-5 transition-colors hover:border-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
-                  href={`${localizedPath(locale, "/products")}?category=${encodeURIComponent(category)}`}
-                >
-                  <span className="flex items-center gap-4">
-                    <CategoryIcon index={index} />
-                    <span className="text-base font-semibold">
-                      {d.categories[category]}
-                    </span>
-                  </span>
-                  <ArrowRight
-                    aria-hidden="true"
-                    className="size-4 text-zinc-400 transition-transform group-hover:translate-x-1 group-hover:text-zinc-950"
-                  />
-                </Link>
-              </li>
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {d.home.customPaths.map((path, index) => (
+              <Link
+                className="group rounded-xl border border-zinc-200 bg-white p-6 transition-colors hover:border-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:p-8"
+                href={localizedPath(locale, "/custom-print")}
+                key={path.title}
+              >
+                <span className="flex size-10 items-center justify-center rounded-md bg-[#f2f2ef] text-zinc-950">
+                  {index === 0 ? (
+                    <Layers3
+                      aria-hidden="true"
+                      className="size-5"
+                      strokeWidth={1.5}
+                    />
+                  ) : (
+                    <Sparkles
+                      aria-hidden="true"
+                      className="size-5"
+                      strokeWidth={1.5}
+                    />
+                  )}
+                </span>
+                <h3 className="mt-6 text-xl font-semibold tracking-[-0.02em]">
+                  {path.title}
+                </h3>
+                <p className="mt-3 max-w-md text-sm leading-6 text-zinc-600">
+                  {path.text}
+                </p>
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold underline decoration-zinc-300 underline-offset-8 transition-colors group-hover:decoration-zinc-950">
+                  {path.action}
+                  <ArrowRight aria-hidden="true" className="size-4" />
+                </span>
+              </Link>
             ))}
-          </ul>
+          </div>
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="printing-guide"
+        className="border-b border-zinc-200 bg-white"
+      >
+        <div className="mx-auto grid max-w-[90rem] gap-8 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16 lg:px-10 lg:py-20">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+              {d.home.guideEyebrow}
+            </p>
+            <h2
+              id="printing-guide"
+              className="mt-4 text-3xl font-semibold tracking-[-0.04em] sm:text-4xl"
+            >
+              {d.home.guideTitle}
+            </h2>
+            <p className="mt-4 text-base leading-7 text-zinc-600">
+              {d.home.guideText}
+            </p>
+          </div>
+          <Link
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-5 text-sm font-semibold text-zinc-950 transition-colors hover:border-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
+            href={localizedPath(locale, "/guide")}
+          >
+            <BookOpen aria-hidden="true" className="size-4" />{" "}
+            {d.home.guideAction}
+          </Link>
         </div>
       </section>
 
@@ -145,70 +186,16 @@ export async function renderHome(locale: Locale) {
             </h2>
           </div>
           <ol className="mt-10 grid gap-8 md:grid-cols-3">
-            <ProcessStep number="01" title={d.home.process[0].title}>
-              {d.home.process[0].text}
-            </ProcessStep>
-            <ProcessStep number="02" title={d.home.process[1].title}>
-              {d.home.process[1].text}
-            </ProcessStep>
-            <ProcessStep number="03" title={d.home.process[2].title}>
-              {d.home.process[2].text}
-            </ProcessStep>
+            {d.home.process.map((step, index) => (
+              <ProcessStep
+                key={step.title}
+                number={`0${index + 1}`}
+                title={step.title}
+              >
+                {step.text}
+              </ProcessStep>
+            ))}
           </ol>
-        </div>
-      </section>
-
-      <section
-        aria-labelledby="custom-print"
-        className="border-b border-zinc-200 bg-white"
-      >
-        <div className="mx-auto max-w-[90rem] px-5 py-12 sm:px-8 sm:py-16 lg:px-10 lg:py-20">
-          <div className="grid overflow-hidden rounded-xl border border-zinc-200 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="p-7 sm:p-10 lg:p-12">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                {d.home.customEyebrow}
-              </p>
-              <h2
-                id="custom-print"
-                className="mt-4 max-w-xl text-3xl font-semibold tracking-[-0.04em] sm:text-4xl"
-              >
-                {d.home.customTitle}
-              </h2>
-              <p className="mt-5 max-w-xl text-base leading-7 text-zinc-600">
-                {d.home.customText}
-              </p>
-              <Link
-                className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-md bg-zinc-950 px-5 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
-                href={localizedPath(locale, "/custom-print")}
-              >
-                {d.home.customStart}{" "}
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </Link>
-            </div>
-            <div className="flex min-h-64 items-center justify-center border-t border-zinc-200 bg-[#f2f2ef] p-8 lg:min-h-full lg:border-l lg:border-t-0">
-              <div className="relative flex size-48 items-center justify-center rounded-full border border-zinc-300 bg-white">
-                <Ruler
-                  aria-hidden="true"
-                  className="size-10 text-zinc-950"
-                  strokeWidth={1.5}
-                />
-                <div className="absolute -left-3 top-8 flex size-12 items-center justify-center rounded-md border border-zinc-300 bg-[#f7f7f5]">
-                  <Layers3
-                    aria-hidden="true"
-                    className="size-5"
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <div className="absolute -bottom-2 right-1 flex size-12 items-center justify-center rounded-md bg-zinc-950 text-white">
-                  <Printer
-                    aria-hidden="true"
-                    className="size-5"
-                    strokeWidth={1.5}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -277,6 +264,9 @@ export async function renderHome(locale: Locale) {
             >
               {d.home.finalTitle}
             </h2>
+            <p className="mt-4 text-sm leading-6 text-zinc-400">
+              {d.home.finalText}
+            </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Link
@@ -291,12 +281,24 @@ export async function renderHome(locale: Locale) {
             >
               {d.nav.customPrint}
             </Link>
-            <Link
-              className="inline-flex min-h-11 items-center justify-center rounded-md border border-zinc-700 px-5 text-sm font-semibold text-white transition-colors hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              href={localizedPath(locale, "/contact")}
-            >
-              {d.home.contact}
-            </Link>
+            {whatsAppUrl ? (
+              <a
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-zinc-700 px-5 text-sm font-semibold text-white transition-colors hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                href={whatsAppUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <MessageCircle aria-hidden="true" className="size-4" />
+                {d.product.askWhatsapp}
+              </a>
+            ) : (
+              <Link
+                className="inline-flex min-h-11 items-center justify-center rounded-md border border-zinc-700 px-5 text-sm font-semibold text-white transition-colors hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                href={localizedPath(locale, "/contact")}
+              >
+                {d.home.contact}
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -307,7 +309,11 @@ export async function renderHome(locale: Locale) {
 function HeroPrintScene({ locale }: { readonly locale: Locale }) {
   return (
     <div
-      aria-label="Abstract 3D printing workspace illustration"
+      aria-label={
+        locale === "tr"
+          ? "Soyut 3D baskı çalışma alanı çizimi"
+          : "Abstract 3D printing workspace illustration"
+      }
       className="relative isolate min-h-80 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 p-6 text-white sm:min-h-96 sm:p-8"
       role="img"
     >
@@ -382,15 +388,6 @@ function SectionHeading({
         </Link>
       ) : null}
     </div>
-  );
-}
-
-function CategoryIcon({ index }: { index: number }) {
-  const Icon = [Box, Layers3, Boxes][index % 3];
-  return (
-    <span className="flex size-10 items-center justify-center rounded-md bg-[#f2f2ef] text-zinc-900">
-      <Icon aria-hidden="true" className="size-5" strokeWidth={1.5} />
-    </span>
   );
 }
 

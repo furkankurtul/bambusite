@@ -10,6 +10,7 @@ export type Dictionary = {
     readonly customPrint: string;
     readonly about: string;
     readonly faq: string;
+    readonly guide: string;
     readonly contact: string;
     readonly startRequest: string;
     readonly primary: string;
@@ -48,6 +49,15 @@ export type Dictionary = {
     readonly customTitle: string;
     readonly customText: string;
     readonly customStart: string;
+    readonly customPaths: readonly {
+      readonly title: string;
+      readonly text: string;
+      readonly action: string;
+    }[];
+    readonly guideEyebrow: string;
+    readonly guideTitle: string;
+    readonly guideText: string;
+    readonly guideAction: string;
     readonly whyEyebrow: string;
     readonly whyTitle: string;
     readonly whyIntro: string;
@@ -59,6 +69,19 @@ export type Dictionary = {
     readonly finalTitle: string;
     readonly finalText: string;
     readonly contact: string;
+  };
+  readonly guide: {
+    readonly eyebrow: string;
+    readonly title: string;
+    readonly intro: string;
+    readonly sections: readonly {
+      readonly title: string;
+      readonly topics: readonly {
+        readonly title: string;
+        readonly text: string;
+        readonly points: readonly string[];
+      }[];
+    }[];
   };
   readonly catalog: {
     readonly eyebrow: string;
@@ -226,6 +249,7 @@ const english: Dictionary = {
     customPrint: "Custom Print",
     about: "About",
     faq: "FAQ",
+    guide: "Guide",
     contact: "Contact",
     startRequest: "Start a request",
     primary: "Primary navigation",
@@ -279,6 +303,23 @@ const english: Dictionary = {
     customText:
       "Send a ready-made 3D model or describe what you want to create. A custom request gives you a clear place to start the conversation.",
     customStart: "Start a custom request",
+    customPaths: [
+      {
+        title: "My model is ready",
+        text: "Share an STL, 3MF, OBJ, or STEP file and the details that matter for your print.",
+        action: "Send my model",
+      },
+      {
+        title: "I only have an idea",
+        text: "Describe what you want to make, how it will be used, and any dimensions you already know.",
+        action: "Describe my idea",
+      },
+    ],
+    guideEyebrow: "Printing guide",
+    guideTitle: "Make clearer choices before you request a print.",
+    guideText:
+      "A practical introduction to materials, files, quality, and preparing an order.",
+    guideAction: "Read the guide",
     whyEyebrow: "Why 3D printing",
     whyTitle: "A practical way to make more specific things",
     whyIntro:
@@ -303,6 +344,101 @@ const english: Dictionary = {
       "Browse the catalog, request a custom print, or get in touch with a question.",
     contact: "Contact",
   },
+  guide: {
+    eyebrow: "3D printing guide",
+    title: "The essentials for planning a 3D print.",
+    intro:
+      "Use these short notes to understand common materials, file formats, print quality, and the details that help prepare a useful request.",
+    sections: [
+      {
+        title: "Basics",
+        topics: [
+          {
+            title: "What is 3D printing?",
+            text: "A digital model is built layer by layer into a physical object.",
+            points: [
+              "It starts with a 3D model.",
+              "Material is added in thin layers.",
+              "Shape, material, and settings affect the result.",
+            ],
+          },
+          {
+            title: "What are STL and 3MF files?",
+            text: "Both formats describe a printable 3D model, with different levels of project detail.",
+            points: [
+              "STL is a widely used mesh format.",
+              "3MF can include more print settings and metadata.",
+              "OBJ and STEP are also useful for some projects.",
+            ],
+          },
+          {
+            title: "What affects the price of a 3D print?",
+            text: "The amount of material, print time, complexity, and requested quantity all contribute.",
+            points: [
+              "Larger parts generally use more material.",
+              "Fine details can increase print time.",
+              "Material and finishing choices can change the estimate.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Materials and use",
+        topics: [
+          {
+            title: "PLA, PETG, and TPU: what is the difference?",
+            text: "These common materials suit different needs for appearance, durability, and flexibility.",
+            points: [
+              "PLA is common for display pieces and general use.",
+              "PETG is often considered when added durability is useful.",
+              "TPU is flexible and suited to parts that need to bend.",
+            ],
+          },
+          {
+            title: "Should I choose a functional or decorative print?",
+            text: "How a piece will be used helps determine its material and the detail that matters most.",
+            points: [
+              "Decorative pieces prioritize appearance.",
+              "Functional parts should account for fit and everyday use.",
+              "Share the intended use with the request.",
+            ],
+          },
+          {
+            title: "Which material should I choose?",
+            text: "The right material depends on the object, its environment, and what it needs to do.",
+            points: [
+              "Describe heat, movement, or outdoor exposure if relevant.",
+              "Mention whether a part must flex or carry weight.",
+              "A material preference can be discussed before printing.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Quality and preparation",
+        topics: [
+          {
+            title: "Layer height and surface quality",
+            text: "Thinner layers can show smoother curves, while thicker layers can shorten print time.",
+            points: [
+              "Layer lines are a normal part of many 3D prints.",
+              "Curved surfaces can benefit from finer layers.",
+              "The intended use helps balance finish and production time.",
+            ],
+          },
+          {
+            title: "How do I prepare a model for printing?",
+            text: "A little project context helps identify practical issues before a print is planned.",
+            points: [
+              "Include the file and its intended dimensions.",
+              "Point out areas where fit or strength matters.",
+              "Add reference images or notes for any important details.",
+            ],
+          },
+        ],
+      },
+    ],
+  },
   catalog: {
     eyebrow: "Catalog",
     title: "Products",
@@ -324,7 +460,7 @@ const english: Dictionary = {
     details: "View details for",
     customizable: "Customizable",
     availableColors: "Available colors",
-    askWhatsapp: "Ask on WhatsApp",
+    askWhatsapp: "Message on WhatsApp",
     askAbout: "Ask about this product",
     price: "Price",
     category: "Category",
@@ -553,6 +689,7 @@ const turkish: Dictionary = {
     customPrint: "Özel Baskı",
     about: "Hakkında",
     faq: "SSS",
+    guide: "Rehber",
     contact: "İletişim",
     startRequest: "Talep oluştur",
     primary: "Ana navigasyon",
@@ -607,6 +744,23 @@ const turkish: Dictionary = {
     customText:
       "Hazır bir 3D model gönderin veya oluşturmak istediğinizi anlatın. Özel baskı talebi, görüşmeye başlamak için net bir alan sunar.",
     customStart: "Özel talep başlat",
+    customPaths: [
+      {
+        title: "Modelim hazır",
+        text: "STL, 3MF, OBJ veya STEP dosyanızı ve baskınız için önemli ayrıntıları paylaşın.",
+        action: "Modelimi gönder",
+      },
+      {
+        title: "Sadece fikrim var",
+        text: "Ne üretmek istediğinizi, nerede kullanacağınızı ve bildiğiniz ölçüleri anlatın.",
+        action: "Fikrimi anlat",
+      },
+    ],
+    guideEyebrow: "Baskı rehberi",
+    guideTitle: "Baskı talebinden önce daha net seçimler yapın.",
+    guideText:
+      "Malzemeler, dosyalar, kalite ve sipariş hazırlığı için pratik bir başlangıç.",
+    guideAction: "Rehberi incele",
     whyEyebrow: "Neden 3D baskı",
     whyTitle: "Daha özel şeyler üretmenin pratik bir yolu",
     whyIntro:
@@ -630,6 +784,101 @@ const turkish: Dictionary = {
     finalText:
       "Kataloğa göz atın, özel baskı talebi oluşturun veya sorunuz için iletişime geçin.",
     contact: "İletişim",
+  },
+  guide: {
+    eyebrow: "3D baskı rehberi",
+    title: "3D baskı planlamak için temel bilgiler.",
+    intro:
+      "Yaygın malzemeleri, dosya formatlarını, baskı kalitesini ve faydalı bir talep hazırlamaya yardımcı ayrıntıları bu kısa notlarla öğrenin.",
+    sections: [
+      {
+        title: "Temel bilgiler",
+        topics: [
+          {
+            title: "3D Baskı Nedir?",
+            text: "Dijital bir model, katman katman fiziksel bir nesneye dönüştürülür.",
+            points: [
+              "Süreç bir 3D modelle başlar.",
+              "Malzeme ince katmanlar halinde eklenir.",
+              "Biçim, malzeme ve ayarlar sonucu etkiler.",
+            ],
+          },
+          {
+            title: "STL ve 3MF Dosyaları Nedir?",
+            text: "Her iki format da basılabilir 3D modeli tanımlar; ancak proje ayrıntısı düzeyleri farklıdır.",
+            points: [
+              "STL yaygın kullanılan bir mesh formatıdır.",
+              "3MF daha fazla baskı ayarı ve bilgi içerebilir.",
+              "OBJ ve STEP de bazı projeler için kullanılabilir.",
+            ],
+          },
+          {
+            title: "3D Baskı Fiyatını Neler Etkiler?",
+            text: "Malzeme miktarı, baskı süresi, karmaşıklık ve adet fiyatı etkiler.",
+            points: [
+              "Büyük parçalar genellikle daha fazla malzeme kullanır.",
+              "İnce ayrıntılar baskı süresini uzatabilir.",
+              "Malzeme ve bitiş tercihleri teklifi değiştirebilir.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Malzemeler ve kullanım",
+        topics: [
+          {
+            title: "PLA, PETG ve TPU Arasındaki Farklar",
+            text: "Bu yaygın malzemeler görünüm, dayanıklılık ve esneklik bakımından farklı ihtiyaçlara uygundur.",
+            points: [
+              "PLA sergileme ürünleri ve genel kullanım için yaygındır.",
+              "PETG ek dayanıklılığın yararlı olduğu durumlarda tercih edilebilir.",
+              "TPU esnektir; bükülmesi gereken parçalar için uygundur.",
+            ],
+          },
+          {
+            title: "Fonksiyonel Parça mı Dekoratif Baskı mı?",
+            text: "Ürünün nasıl kullanılacağı, malzeme ve önemli ayrıntıları belirlemeye yardımcı olur.",
+            points: [
+              "Dekoratif baskılarda görünüm önceliklidir.",
+              "Fonksiyonel parçalarda uyum ve günlük kullanım hesaba katılmalıdır.",
+              "Talepte kullanım amacını paylaşın.",
+            ],
+          },
+          {
+            title: "Hangi Malzemeyi Seçmeliyim?",
+            text: "Doğru malzeme; nesneye, bulunduğu ortama ve beklenen kullanıma bağlıdır.",
+            points: [
+              "İlgiliyse ısı, hareket veya dış ortamı belirtin.",
+              "Parçanın esnemesi ya da yük taşıması gerekip gerekmediğini yazın.",
+              "Malzeme tercihi baskıdan önce konuşulabilir.",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Kalite ve hazırlık",
+        topics: [
+          {
+            title: "Katman Yüksekliği ve Yüzey Kalitesi",
+            text: "İnce katmanlar daha pürüzsüz eğriler sunabilir; kalın katmanlar baskı süresini kısaltabilir.",
+            points: [
+              "Katman çizgileri birçok 3D baskının doğal parçasıdır.",
+              "Eğrisel yüzeyler daha ince katmandan yararlanabilir.",
+              "Kullanım amacı, bitiş ve süre dengesini belirler.",
+            ],
+          },
+          {
+            title: "Modelinizi Baskıya Nasıl Hazırlarsınız?",
+            text: "Biraz proje bilgisi, baskı planlanmadan önce pratik konuların anlaşılmasına yardımcı olur.",
+            points: [
+              "Dosyayı ve hedef ölçülerini ekleyin.",
+              "Uyum veya dayanım gereken alanları belirtin.",
+              "Önemli ayrıntılar için referans görseller veya notlar ekleyin.",
+            ],
+          },
+        ],
+      },
+    ],
   },
   catalog: {
     ...english.catalog,
@@ -655,7 +904,7 @@ const turkish: Dictionary = {
     details: "{name} detaylarını gör",
     customizable: "Özelleştirilebilir",
     availableColors: "Mevcut renkler",
-    askWhatsapp: "WhatsApp'tan sor",
+    askWhatsapp: "WhatsApp'tan yaz",
     askAbout: "Bu ürün hakkında sor",
     price: "Fiyat",
     category: "Kategori",

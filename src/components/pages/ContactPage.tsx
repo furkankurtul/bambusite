@@ -24,7 +24,7 @@ export function renderContactPage(locale: Locale) {
       external: true,
     },
     {
-      label: "WhatsApp",
+      label: d.product.askWhatsapp,
       href: createWhatsAppUrl({ phoneNumber: siteConfig.whatsappNumber }) ?? "",
       description:
         locale === "tr"
@@ -53,7 +53,7 @@ export function renderContactPage(locale: Locale) {
             {d.contact.title}
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-[-0.045em] sm:text-5xl">
-            {d.contact.intro}
+            {d.contact.title}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg sm:leading-8">
             {d.contact.intro}
