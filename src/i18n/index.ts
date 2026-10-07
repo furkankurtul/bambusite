@@ -49,6 +49,11 @@ export type Dictionary = {
     readonly customTitle: string;
     readonly customText: string;
     readonly customStart: string;
+    readonly secondaryTitle: string;
+    readonly secondaryLinks: readonly {
+      readonly title: string;
+      readonly text: string;
+    }[];
     readonly customPaths: readonly {
       readonly title: string;
       readonly text: string;
@@ -266,16 +271,15 @@ const english: Dictionary = {
     tagline: "3D printed products and custom print requests.",
   },
   home: {
-    eyebrow: "Made for the physical world",
-    title: "Turn ideas into products you can hold.",
+    eyebrow: "3D printed products",
+    title: "Ready-made 3D printed products, made for your space.",
     intro:
-      "Discover thoughtfully made 3D printed products, or bring your own model and idea to life with a custom print.",
+      "Browse ready-made pieces or request a custom print from your model or idea.",
     explore: "Explore products",
-    customCta: "Request a custom print",
-    catalogEyebrow: "Catalog",
+    customCta: "Custom print",
+    catalogEyebrow: "Products",
     featuredTitle: "Featured products",
-    featuredIntro:
-      "A small selection of ready-to-print pieces for everyday use, play, and display.",
+    featuredIntro: "Available designs ready to explore.",
     viewAll: "View all products",
     noProducts: "Products will appear here as they are added to the catalog.",
     categoriesEyebrow: "Browse by type",
@@ -299,10 +303,29 @@ const english: Dictionary = {
       },
     ],
     customEyebrow: "Custom printing",
-    customTitle: "Have a model or an idea of your own?",
+    customTitle: "Have a model or an idea?",
     customText:
-      "Send a ready-made 3D model or describe what you want to create. A custom request gives you a clear place to start the conversation.",
-    customStart: "Start a custom request",
+      "Send your STL or model file, or describe what you need. We’ll use your request to start the conversation.",
+    customStart: "Start a custom print request",
+    secondaryTitle: "More to explore",
+    secondaryLinks: [
+      {
+        title: "Guide",
+        text: "Learn the basics of materials, files, and print preparation.",
+      },
+      {
+        title: "FAQ",
+        text: "Find answers to common printing questions.",
+      },
+      {
+        title: "About",
+        text: "See what this catalog is made for.",
+      },
+      {
+        title: "Contact",
+        text: "Choose a contact option or start a request.",
+      },
+    ],
     customPaths: [
       {
         title: "My model is ready",
@@ -707,16 +730,15 @@ const turkish: Dictionary = {
   },
   home: {
     ...english.home,
-    eyebrow: "Fiziksel dünya için üretildi",
-    title: "Fikirleri elinizde tutabileceğiniz ürünlere dönüştürün.",
+    eyebrow: "3D baskı ürünleri",
+    title: "Hazır 3D baskı ürünler ve size özel üretim.",
     intro:
-      "Özenle hazırlanan 3D baskı ürünlerini keşfedin veya kendi modelinizi ve fikrinizi özel baskıyla hayata geçirin.",
-    explore: "Ürünleri keşfet",
-    customCta: "Özel baskı talebi oluştur",
-    catalogEyebrow: "Katalog",
+      "Hazır ürünleri inceleyin; modelinizi gönderin veya fikrinizi anlatarak özel baskı talebi oluşturun.",
+    explore: "Ürünleri incele",
+    customCta: "Özel baskı",
+    catalogEyebrow: "Ürünler",
     featuredTitle: "Öne çıkan ürünler",
-    featuredIntro:
-      "Günlük kullanım, oyun ve sergileme için baskıya hazır ürünlerden bir seçki.",
+    featuredIntro: "İnceleyebileceğiniz hazır 3D baskı ürünleri.",
     viewAll: "Tüm ürünleri gör",
     noProducts: "Kataloğa ürün eklendikçe burada görünecek.",
     categoriesEyebrow: "Türe göre keşfet",
@@ -740,10 +762,29 @@ const turkish: Dictionary = {
       },
     ],
     customEyebrow: "Özel baskı",
-    customTitle: "Kendi modeliniz veya fikriniz mi var?",
+    customTitle: "Modeliniz ya da fikriniz mi var?",
     customText:
-      "Hazır bir 3D model gönderin veya oluşturmak istediğinizi anlatın. Özel baskı talebi, görüşmeye başlamak için net bir alan sunar.",
-    customStart: "Özel talep başlat",
+      "STL veya model dosyanızı gönderin; yalnızca fikriniz varsa ne istediğinizi anlatın.",
+    customStart: "Özel Baskı Talebi Oluştur",
+    secondaryTitle: "Daha fazlasını keşfedin",
+    secondaryLinks: [
+      {
+        title: "Rehber",
+        text: "Malzemeler, dosyalar ve baskı hazırlığı hakkında temel bilgiler.",
+      },
+      {
+        title: "SSS",
+        text: "Sık sorulan baskı sorularının yanıtları.",
+      },
+      {
+        title: "Hakkında",
+        text: "Kataloğun odağını ve kullanım alanlarını inceleyin.",
+      },
+      {
+        title: "İletişim",
+        text: "İletişim seçeneği seçin veya talep başlatın.",
+      },
+    ],
     customPaths: [
       {
         title: "Modelim hazır",
