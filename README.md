@@ -62,8 +62,9 @@ src/
   types/product.ts     Product domain types and central allowed values
 public/
   models/              Web-delivery STL files
-  products/            Product thumbnails and gallery images
+  products/            Optimized product thumbnails and gallery images
 assets/models/         Original production STL source files, excluded from export
+assets/products/       Original product images, excluded from export
 ```
 
 `@/*` maps to `src/*`.

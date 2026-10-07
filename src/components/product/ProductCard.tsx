@@ -29,6 +29,7 @@ export function ProductCard({
         aria-label={`${d.product.view} ${displayProduct.name}`}
         className="block focus-visible:outline-offset-[-3px]"
         href={detailHref}
+        prefetch={false}
       >
         <ProductImage name={displayProduct.name} src={thumbnailSrc} />
       </Link>
@@ -49,6 +50,7 @@ export function ProductCard({
           <Link
             className="rounded-sm hover:underline hover:underline-offset-4"
             href={detailHref}
+            prefetch={false}
           >
             {displayProduct.name}
           </Link>
@@ -76,6 +78,7 @@ export function ProductCard({
             aria-label={`${d.product.details.replace("{name}", displayProduct.name)}`}
             className="inline-flex items-center gap-1 rounded-md text-sm font-semibold text-zinc-800 transition hover:text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950"
             href={detailHref}
+            prefetch={false}
           >
             {d.product.view}
             <ArrowUpRight aria-hidden="true" className="size-4" />

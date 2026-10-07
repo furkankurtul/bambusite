@@ -23,8 +23,8 @@ const localProducts = [
           "A detailed dragon model made for shelves, desks, and imaginative play.",
       },
     },
-    thumbnail: "/products/caraxes/cover.png",
-    images: ["/products/caraxes/01.png"],
+    thumbnail: "/products/caraxes/cover.webp",
+    images: ["/products/caraxes/01.webp"],
     model: "/models/caraxes-web.stl",
     colors: [
       { name: "Graphite", hex: "#27272A" },
@@ -84,8 +84,8 @@ const localProducts = [
           "A compact 3D printed fidget toy with a playful star shape.",
       },
     },
-    thumbnail: "/products/star-fidget/cover.png",
-    images: ["/products/star-fidget/01.png"],
+    thumbnail: "/products/star-fidget/cover.webp",
+    images: ["/products/star-fidget/01.webp"],
     model: "/models/10-star-fidget-toy.stl",
     colors: [
       { name: "Midnight Blue", hex: "#1E3A8A" },
